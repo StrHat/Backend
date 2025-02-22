@@ -18,7 +18,7 @@ public class SelfDiagnosis extends BaseCreatedEntity {
     private Long id;
 
     @Column(name = "score", nullable = false)
-    private int score;
+    private Integer score;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", length = 10, nullable = false)
@@ -29,7 +29,7 @@ public class SelfDiagnosis extends BaseCreatedEntity {
     private User user;
 
     @Builder
-    public SelfDiagnosis(int score, SelfDiagnosisType type, User user) {
+    public SelfDiagnosis(Integer score, SelfDiagnosisType type, User user) {
         this.score = score;
         this.type = type;
         this.user = user;
