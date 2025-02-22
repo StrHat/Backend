@@ -1,12 +1,15 @@
 package com.konkuk.strhat.user.entity;
 
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
+import com.konkuk.strhat.self_diagnosis.entity.SelfDiagnosis;
 import com.konkuk.strhat.user.enums.Gender;
 import com.konkuk.strhat.user.enums.Job;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -47,6 +50,9 @@ public class User extends BaseCreatedEntity {
     @Column(name = "personality", length = 1000, nullable = false)
     private String personality;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SelfDiagnosis> selfDiagnoses = new ArrayList<>();
+
     @Builder
     public User(String nickname, LocalDate birth, Gender gender, Job job,
                 String hobbyHealingStyle, String stressReliefStyle, String personality) {
@@ -57,6 +63,7 @@ public class User extends BaseCreatedEntity {
         this.hobbyHealingStyle = hobbyHealingStyle;
         this.stressReliefStyle = stressReliefStyle;
         this.personality = personality;
+        this.selfDiagnoses = new ArrayList<>();
     }
 
 }
