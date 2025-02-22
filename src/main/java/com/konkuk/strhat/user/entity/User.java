@@ -3,6 +3,7 @@ package com.konkuk.strhat.user.entity;
 import com.konkuk.strhat.diary.entity.Diary;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
 import com.konkuk.strhat.self_diagnosis.entity.SelfDiagnosis;
+import com.konkuk.strhat.stress_summary.entity.StressSummary;
 import com.konkuk.strhat.user.enums.Gender;
 import com.konkuk.strhat.user.enums.Job;
 import jakarta.persistence.*;
@@ -57,6 +58,10 @@ public class User extends BaseCreatedEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Diary> diaries = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<StressSummary> stressSummaries = new ArrayList<>();
+
+
     @Builder
     public User(String nickname, LocalDate birth, Gender gender, Job job,
                 String hobbyHealingStyle, String stressReliefStyle, String personality) {
@@ -69,6 +74,7 @@ public class User extends BaseCreatedEntity {
         this.personality = personality;
         this.selfDiagnoses = new ArrayList<>();
         this.diaries = new ArrayList<>();
+        this.stressSummaries = new ArrayList<>();
     }
 
 }
