@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Table(name = "stress_summary")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StressSummary extends BaseCreatedEntity {
+public class StressSummary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
