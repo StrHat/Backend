@@ -15,3 +15,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC  # path, query, body, response ? ??
+    tags-sorter: alpha  # ?? ??? ? ??
+    operations-sorter: method  # delete - get - patch - post - put ? ??
