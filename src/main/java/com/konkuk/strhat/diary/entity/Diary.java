@@ -29,16 +29,16 @@ public class Diary {
     @Column(name = "chat_available", nullable = false)
     private Boolean chatAvailable = true;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public Diary(String content, Integer emotion, LocalDate date, Boolean chatAvailable, User user) {
+    public Diary(String content, Integer emotion, LocalDate date, Boolean chatAvailable) {
         this.content = content;
         this.emotion = emotion;
         this.date = date;
         this.chatAvailable = chatAvailable;
-        this.user = user;
     }
 }

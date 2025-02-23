@@ -77,4 +77,19 @@ public class User extends BaseCreatedEntity {
         this.stressSummaries = new ArrayList<>();
     }
 
+    // 연관관계 편의 메서드
+    public void addSelfDiagnosis(SelfDiagnosis selfDiagnosis) {
+        selfDiagnoses.add(selfDiagnosis);
+        selfDiagnosis.setUser(this);
+    }
+
+    public void addDiary(Diary diary) {
+        diaries.add(diary);
+        diary.setUser(this);
+    }
+
+    public void addStressSummary(StressSummary stressSummary) {
+        stressSummaries.add(stressSummary);
+        stressSummary.setUser(this);
+    }
 }
