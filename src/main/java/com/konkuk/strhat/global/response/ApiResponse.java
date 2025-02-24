@@ -26,10 +26,10 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    public static ApiResponse<?> error(ErrorResponse response) {
+    public static ApiResponse<?> error(ErrorResponse errorResponse) {
         return ApiResponse.builder()
                 .isSuccess(false)
-                .errorResponse(response)
+                .errorResponse(errorResponse)
                 .build();
     }
 
