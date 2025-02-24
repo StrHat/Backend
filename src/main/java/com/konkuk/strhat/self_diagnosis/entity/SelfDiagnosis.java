@@ -24,14 +24,14 @@ public class SelfDiagnosis extends BaseCreatedEntity {
     @Column(name = "type", length = 10, nullable = false)
     private SelfDiagnosisType type;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public SelfDiagnosis(Integer score, SelfDiagnosisType type, User user) {
+    public SelfDiagnosis(Integer score, SelfDiagnosisType type) {
         this.score = score;
         this.type = type;
-        this.user = user;
     }
 }
