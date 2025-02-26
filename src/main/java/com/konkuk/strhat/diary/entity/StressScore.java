@@ -44,7 +44,8 @@ public class StressScore {
     public StressScore(Integer score,
                        String stressFactor,
                        LocalDate recordedDate,
-                       Diary diary) {
+                       Diary diary
+    ) {
         this.score = score;
         this.stressFactor = stressFactor;
         this.recordedDate = recordedDate;

@@ -52,7 +52,8 @@ public class Feedback {
                     String negativeEmotions,
                     String stressReliefSuggestion,
                     LocalDate feedbackDate,
-                    Diary diary) {
+                    Diary diary
+    ) {
         this.diarySummary = diarySummary;
         this.positiveEmotions = positiveEmotions;
         this.negativeEmotions = negativeEmotions;
