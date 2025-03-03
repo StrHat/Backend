@@ -19,11 +19,11 @@ public class ErrorResponse {
                 .build();
     }
 
-    public static ErrorResponse of(String message, ErrorCode errorCode) {
+    public static ErrorResponse of(ErrorCode errorCode, String message) {
         return ErrorResponse.builder()
                 .status(errorCode.getHttpStatus().value())
                 .code(errorCode.getCode())
-                .message(message)
+                .message(errorCode.getMessage() + " - " + message)
                 .build();
     }
 }
