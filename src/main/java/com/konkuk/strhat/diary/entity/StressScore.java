@@ -33,8 +33,8 @@ public class StressScore {
     @Column(name = "stress_factor", length = 255, nullable = false)
     private String stressFactor;
 
-    @Column(name = "recorded_date", nullable = false)
-    private LocalDate recordedDate;
+    @Column(name = "stress_score_date", nullable = false)
+    private LocalDate stressScoreDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id", nullable = false)
@@ -43,12 +43,12 @@ public class StressScore {
     @Builder
     public StressScore(Integer score,
                        String stressFactor,
-                       LocalDate recordedDate,
+                       LocalDate stressScoreDate,
                        Diary diary
     ) {
         this.score = score;
         this.stressFactor = stressFactor;
-        this.recordedDate = recordedDate;
+        this.stressScoreDate = stressScoreDate;
         this.diary = diary;
     }
 }
