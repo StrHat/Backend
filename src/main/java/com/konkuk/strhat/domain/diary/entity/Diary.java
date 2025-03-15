@@ -1,6 +1,6 @@
-package com.konkuk.strhat.diary.entity;
+package com.konkuk.strhat.domain.diary.entity;
 
-import com.konkuk.strhat.user.entity.User;
+import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

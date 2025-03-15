@@ -1,4 +1,4 @@
-package com.konkuk.strhat.diary.entity;
+package com.konkuk.strhat.domain.diary.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

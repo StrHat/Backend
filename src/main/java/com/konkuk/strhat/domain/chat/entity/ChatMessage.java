@@ -1,7 +1,7 @@
-package com.konkuk.strhat.chat.entity;
+package com.konkuk.strhat.domain.chat.entity;
 
-import com.konkuk.strhat.chat.enums.Sender;
-import com.konkuk.strhat.diary.entity.Diary;
+import com.konkuk.strhat.domain.chat.enums.Sender;
+import com.konkuk.strhat.domain.diary.entity.Diary;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

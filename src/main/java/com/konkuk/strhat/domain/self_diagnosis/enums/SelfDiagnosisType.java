@@ -1,4 +1,4 @@
-package com.konkuk.strhat.self_diagnosis.enums;
+package com.konkuk.strhat.domain.self_diagnosis.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

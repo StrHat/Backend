@@ -1,11 +1,11 @@
-package com.konkuk.strhat.user.entity;
+package com.konkuk.strhat.domain.user.entity;
 
-import com.konkuk.strhat.diary.entity.Diary;
+import com.konkuk.strhat.domain.diary.entity.Diary;
+import com.konkuk.strhat.domain.self_diagnosis.entity.SelfDiagnosis;
+import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
-import com.konkuk.strhat.self_diagnosis.entity.SelfDiagnosis;
-import com.konkuk.strhat.stress_summary.entity.StressSummary;
-import com.konkuk.strhat.user.enums.Gender;
-import com.konkuk.strhat.user.enums.Job;
+import com.konkuk.strhat.domain.stress_summary.entity.StressSummary;
+import com.konkuk.strhat.domain.user.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
