@@ -23,8 +23,8 @@ public class Diary {
     @Column(name = "emotion", nullable = false)
     private Integer emotion;  // 1~5 사이의 숫자로 감정 저장
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "diary_date", nullable = false)
+    private LocalDate diaryDate;
 
     @Column(name = "chat_available", nullable = false)
     private Boolean chatAvailable = true;
@@ -35,10 +35,10 @@ public class Diary {
     private User user;
 
     @Builder
-    public Diary(String content, Integer emotion, LocalDate date, Boolean chatAvailable) {
+    public Diary(String content, Integer emotion, LocalDate diaryDate, Boolean chatAvailable) {
         this.content = content;
         this.emotion = emotion;
-        this.date = date;
+        this.diaryDate = diaryDate;
         this.chatAvailable = chatAvailable;
     }
 }
