@@ -7,15 +7,23 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ErrorResponse {
+    private final int status;
     private final String code;
     private final String message;
-    private final int status;
 
-    public static ErrorResponse from(ErrorCode errorCode){
+    public static ErrorResponse from(ErrorCode errorCode) {
         return ErrorResponse.builder()
+                .status(errorCode.getHttpStatus().value())
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
+                .build();
+    }
+
+    public static ErrorResponse of(ErrorCode errorCode, String message) {
+        return ErrorResponse.builder()
                 .status(errorCode.getHttpStatus().value())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage() + " - " + message)
                 .build();
     }
 }
