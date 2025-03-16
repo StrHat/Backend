@@ -21,7 +21,7 @@ public class Diary {
     private String content;
 
     @Column(name = "emotion", nullable = false)
-    private Integer emotion;  // 1~5 사이의 숫자로 감정 저장
+    private Integer emotion;
 
     @Column(name = "diary_date", nullable = false)
     private LocalDate diaryDate;
