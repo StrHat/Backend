@@ -33,7 +33,7 @@ public class StressScore {
     @Column(name = "stress_factor", length = 255, nullable = false)
     private String stressFactor;
 
-    @Column(name = "stress_score_date", nullable = false)
+    @Column(name = "stress_score_date", nullable = false, unique = true)
     private LocalDate stressScoreDate;
 
     @OneToOne(fetch = FetchType.LAZY)

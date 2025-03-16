@@ -21,13 +21,10 @@ public class Diary {
     private String content;
 
     @Column(name = "emotion", nullable = false)
-    private Integer emotion;  // 1~5 사이의 숫자로 감정 저장
+    private Integer emotion;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
-
-    @Column(name = "chat_available", nullable = false)
-    private Boolean chatAvailable = true;
+    @Column(name = "diary_date", nullable = false, unique = true)
+    private LocalDate diaryDate;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,10 +32,9 @@ public class Diary {
     private User user;
 
     @Builder
-    public Diary(String content, Integer emotion, LocalDate date, Boolean chatAvailable) {
+    public Diary(String content, Integer emotion, LocalDate diaryDate) {
         this.content = content;
         this.emotion = emotion;
-        this.date = date;
-        this.chatAvailable = chatAvailable;
+        this.diaryDate = diaryDate;
     }
 }
