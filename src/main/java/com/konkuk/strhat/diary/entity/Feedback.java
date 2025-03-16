@@ -39,7 +39,7 @@ public class Feedback {
     @Column(name = "stress_relief_suggestion",length = 255, nullable = false)
     private String stressReliefSuggestion;
 
-    @Column(name = "feedback_date", nullable = false)
+    @Column(name = "feedback_date", nullable = false, unique = true)
     private LocalDate feedbackDate;
 
     @OneToOne(fetch = FetchType.LAZY)

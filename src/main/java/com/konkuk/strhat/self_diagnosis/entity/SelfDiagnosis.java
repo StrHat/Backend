@@ -24,7 +24,7 @@ public class SelfDiagnosis {
     @Column(name = "type", length = 10, nullable = false)
     private SelfDiagnosisType type;
 
-    @Column(name = "self_diagnosis_date", nullable = false)
+    @Column(name = "self_diagnosis_date", nullable = false, unique = true)
     private LocalDate selfDiagnosisDate;
 
     @Setter
@@ -33,7 +33,7 @@ public class SelfDiagnosis {
     private User user;
 
     @Builder
-    public SelfDiagnosis(Integer score, SelfDiagnosisType type, LocalDate selfDiagnosisDate) {
+    public SelfDiagnosis(Integer score, SelfDiagnosisType type) {
         this.score = score;
         this.type = type;
         this.selfDiagnosisDate = LocalDate.now();

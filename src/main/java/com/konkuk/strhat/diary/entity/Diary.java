@@ -23,7 +23,7 @@ public class Diary {
     @Column(name = "emotion", nullable = false)
     private Integer emotion;
 
-    @Column(name = "diary_date", nullable = false)
+    @Column(name = "diary_date", nullable = false, unique = true)
     private LocalDate diaryDate;
 
     @Setter
