@@ -25,7 +25,6 @@ public class User extends BaseCreatedEntity {
     @Column(name = "user_id", updatable = false)
     private Long id;
 
-    @Size(max = 10, message = "닉네임은 10자 이하로 입력해주세요.")
     @Column(name = "nickname", length = 10, nullable = false)
     private String nickname;
 
@@ -40,15 +39,12 @@ public class User extends BaseCreatedEntity {
     @Column(name = "job", length = 10, nullable = false)
     private Job job;
 
-    @Size(max = 1000, message = "취미 및 힐링방법은 1000자 이하로 입력해주세요.")
     @Column(name = "hobby_healing_style", length = 1000, nullable = false)
     private String hobbyHealingStyle;
 
-    @Size(max = 1000, message = "스트레스 해소 방법은 1000자 이하로 입력해주세요.")
     @Column(name = "stress_relief_style", length = 1000, nullable = false)
     private String stressReliefStyle;
 
-    @Size(max = 1000, message = "성향 정보는 1000자 이하로 입력해주세요.")
     @Column(name = "personality", length = 1000, nullable = false)
     private String personality;
 
