@@ -36,6 +36,6 @@ public class SelfDiagnosis {
     public SelfDiagnosis(Integer score, SelfDiagnosisType type, LocalDate selfDiagnosisDate) {
         this.score = score;
         this.type = type;
-        this.selfDiagnosisDate = selfDiagnosisDate;
+        this.selfDiagnosisDate = LocalDate.now();
     }
 }
