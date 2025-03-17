@@ -24,6 +24,9 @@ public class User extends BaseCreatedEntity {
     @Column(name = "user_id", updatable = false)
     private Long id;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "nickname", length = 10, nullable = false)
     private String nickname;
 
@@ -58,8 +61,9 @@ public class User extends BaseCreatedEntity {
 
 
     @Builder
-    public User(String nickname, LocalDate birth, Gender gender, Job job,
+    public User(String email, String nickname, LocalDate birth, Gender gender, Job job,
                 String hobbyHealingStyle, String stressReliefStyle, String personality) {
+        this.email = email;
         this.nickname = nickname;
         this.birth = birth;
         this.gender = gender;
