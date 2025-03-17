@@ -16,8 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
@@ -39,6 +41,7 @@ public class JwtProvider {
     public static final String REFRESH_TOKEN = "Refresh-Token";
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @PostConstruct
     public void init() {
@@ -85,12 +88,13 @@ public class JwtProvider {
                 .compact();
     }
 
-    public void validateToken(String token) {
+    public boolean validateToken(String token) {
         try{
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
+            return true;
         } catch (UnsupportedJwtException
                  | MalformedJwtException
                  | SignatureException
@@ -123,5 +127,10 @@ public class JwtProvider {
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
+    }
+
+    public Authentication createAuthentication(String email) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }
