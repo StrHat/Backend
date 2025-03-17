@@ -1,7 +1,6 @@
-package com.konkuk.strhat.stress_summary.entity;
+package com.konkuk.strhat.domain.stress_summary.entity;
 
-import com.konkuk.strhat.user.entity.User;
-import com.konkuk.strhat.global.entity.BaseCreatedEntity;
+import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

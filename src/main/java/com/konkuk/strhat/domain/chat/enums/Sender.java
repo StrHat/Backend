@@ -1,13 +1,13 @@
-package com.konkuk.strhat.user.enums;
+package com.konkuk.strhat.domain.chat.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Gender {
-    MALE("남자"),
-    FEMALE("여자");
+public enum Sender {
+    USER("유저"),
+    CHAT_BOT("챗봇");
 
     private final String description;
 }

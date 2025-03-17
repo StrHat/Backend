@@ -1,4 +1,4 @@
-package com.konkuk.strhat.user.enums;
+package com.konkuk.strhat.domain.user.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
