@@ -31,7 +31,7 @@ public class User extends BaseCreatedEntity {
     private String nickname;
 
     @Column(name = "birth", nullable = false)
-    private LocalDate birth;
+    private Integer birth;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", length = 10, nullable = false)
@@ -61,7 +61,7 @@ public class User extends BaseCreatedEntity {
 
 
     @Builder
-    public User(String email, String nickname, LocalDate birth, Gender gender, Job job,
+    public User(String email, String nickname, Integer birth, Gender gender, Job job,
                 String hobbyHealingStyle, String stressReliefStyle, String personality) {
         this.email = email;
         this.nickname = nickname;
