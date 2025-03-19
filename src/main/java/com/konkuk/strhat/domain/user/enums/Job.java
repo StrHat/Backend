@@ -1,5 +1,6 @@
 package com.konkuk.strhat.domain.user.enums;
 
+import com.konkuk.strhat.domain.user.exception.UnsupportedJobTypeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,4 +12,12 @@ public enum Job {
     JOB_SEEKER("취준생");
 
     private final String description;
+
+    public static Job toJob(String string) {
+        try {
+            return Job.valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new UnsupportedJobTypeException();
+        }
+    }
 }
