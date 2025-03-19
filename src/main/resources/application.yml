@@ -23,7 +23,7 @@ spring:
       password: ${REDIS_PASSWORD}
 
 jwt:
-  secret: 32g4u12b4g12yif4yxc31ivb32nomp2om1hoixh2iuh2i1prhbiupdhpixhp
+  secret: ${JWT_SECRET}
 
 springdoc:
   swagger-ui:
