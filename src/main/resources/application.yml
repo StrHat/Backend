@@ -16,6 +16,12 @@ spring:
       hibernate:
         format_sql: true
 
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
 jwt:
   secret: 32g4u12b4g12yif4yxc31ivb32nomp2om1hoixh2iuh2i1prhbiupdhpixhp
 
