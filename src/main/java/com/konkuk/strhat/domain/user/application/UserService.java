@@ -2,6 +2,7 @@ package com.konkuk.strhat.domain.user.application;
 
 import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
+import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
@@ -9,6 +10,7 @@ import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.domain.user.exception.DuplicateEmailException;
+import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,15 +43,23 @@ public class UserService {
 
         userRepository.save(user);
         TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByEmail(request.getEmail());
-
-        if (optionalRefreshToken.isPresent()) {
-            refreshTokenRepository.save(optionalRefreshToken.get().updateRefreshToken(tokenDto.getRefreshToken()));
-            return tokenDto;
-        }
-
         RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getEmail());
         refreshTokenRepository.save(refreshToken);
         return tokenDto;
+    }
+
+    public GetUserInfoResponse findUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        return new GetUserInfoResponse(
+                user.getNickname(),
+                user.getBirth(),
+                user.getGender().toString(),
+                user.getJob().toString(),
+                user.getHobbyHealingStyle(),
+                user.getStressReliefStyle(),
+                user.getPersonality()
+        );
     }
 }

@@ -1,10 +1,14 @@
 package com.konkuk.strhat.domain.user.api;
 
 import com.konkuk.strhat.domain.user.application.UserService;
+import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
+import com.konkuk.strhat.domain.user.entity.CustomUserDetails;
 import com.konkuk.strhat.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,12 @@ public class UserController {
     @PostMapping("/sign-up")
     public ApiResponse<TokenDto> signIn(@RequestBody PostSignUpRequest request) {
         TokenDto response = userService.createUser(request);
+        return ApiResponse.success(response);
+    }
+
+    @GetMapping("")
+    public ApiResponse<GetUserInfoResponse> readUserInfo(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        GetUserInfoResponse response = userService.findUserInfo(customUserDetails.getId());
         return ApiResponse.success(response);
     }
 }
