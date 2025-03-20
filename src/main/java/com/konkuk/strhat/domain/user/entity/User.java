@@ -8,7 +8,6 @@ import com.konkuk.strhat.global.entity.BaseCreatedEntity;
 import com.konkuk.strhat.domain.stress_summary.entity.StressSummary;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
