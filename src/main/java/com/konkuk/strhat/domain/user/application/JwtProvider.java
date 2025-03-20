@@ -1,6 +1,7 @@
 package com.konkuk.strhat.domain.user.application;
 
 import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
+import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
@@ -57,9 +60,12 @@ public class JwtProvider {
         return token;   //예외 던지기
     }
 
-    public void createAllToken(String email) {
+    public TokenDto createAllToken(String email) {
         String accessToken = createAccessToken(email);
         String refreshToken = createRefreshToken(email);
+        Instant refreshTokenExpiredAt = Instant.now().plus(30, ChronoUnit.DAYS);
+
+        return new TokenDto(accessToken, refreshToken, refreshTokenExpiredAt);
     }
 
     public String createAccessToken(String email) {

@@ -2,6 +2,7 @@ package com.konkuk.strhat.domain.user.api;
 
 import com.konkuk.strhat.domain.user.application.UserService;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
+import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public ApiResponse<Void> signIn(@RequestBody PostSignUpRequest request) {
-        userService.createUser(request);
-        return ApiResponse.successOnly();
+    public ApiResponse<TokenDto> signIn(@RequestBody PostSignUpRequest request) {
+        TokenDto response = userService.createUser(request);
+        return ApiResponse.success(response);
     }
 }
