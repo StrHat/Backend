@@ -75,6 +75,26 @@ public class User extends BaseCreatedEntity {
         this.stressSummaries = new ArrayList<>();
     }
 
+    // 비즈니스 로직 메소드
+    public void updateBasicInfo(String nickname, Integer birth, Gender gender, Job job) {
+        this.nickname = nickname;
+        this.birth = birth;
+        this.gender = gender;
+        this.job = job;
+    }
+
+    public void updateHobbyHealingStyle(String hobbyHealingStyle) {
+        this.hobbyHealingStyle = hobbyHealingStyle;
+    }
+
+    public void updateStressReliefStyle(String stressReliefStyle) {
+        this.stressReliefStyle = stressReliefStyle;
+    }
+
+    public void updatePersonality(String personality) {
+        this.personality = personality;
+    }
+
     // 연관관계 편의 메서드
     public void addSelfDiagnosis(SelfDiagnosis selfDiagnosis) {
         selfDiagnoses.add(selfDiagnosis);
