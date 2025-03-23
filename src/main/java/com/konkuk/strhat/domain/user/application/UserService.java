@@ -48,6 +48,7 @@ public class UserService {
         return tokenDto;
     }
 
+    @Transactional(readOnly = true)
     public GetUserInfoResponse findUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
