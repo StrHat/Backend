@@ -27,6 +27,12 @@ public class UserController {
         return ApiResponse.success(response);
     }
 
+    @PostMapping("/sign-out")
+    public ApiResponse<Void> signOut(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.processSignOut(userDetails.getEmail());
+        return ApiResponse.successOnly();
+    }
+
     @GetMapping("")
     public ApiResponse<GetUserInfoResponse> readUserInfo(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         GetUserInfoResponse response = userService.findUserInfo(customUserDetails.getId());

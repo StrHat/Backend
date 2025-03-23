@@ -63,4 +63,10 @@ public class UserService {
                 user.getPersonality()
         );
     }
+
+    @Transactional
+    public void processSignOut(String email) {
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByEmail(email);
+        refreshToken.ifPresent(refreshTokenRepository::deleteAll);
+    }
 }
