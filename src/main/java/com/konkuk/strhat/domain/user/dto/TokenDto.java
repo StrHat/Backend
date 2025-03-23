@@ -21,5 +21,12 @@ public class TokenDto {
         this.refreshToken = refreshToken;
         this.refreshTokenExpiredAt = refreshTokenExpiredAt;
     }
-    
+
+    public static TokenDto empty() {
+        return TokenDto.builder()
+                .accessToken(null)
+                .refreshToken(null)
+                .refreshTokenExpiredAt(null)
+                .build();
+    }
 }
