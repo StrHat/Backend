@@ -3,6 +3,9 @@ package com.konkuk.strhat.domain.user.api;
 import com.konkuk.strhat.domain.user.application.UserService;
 import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
 import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
+import com.konkuk.strhat.domain.user.dto.PatchHobbyHealingStyleRequest;
+import com.konkuk.strhat.domain.user.dto.PatchPersonalityRequest;
+import com.konkuk.strhat.domain.user.dto.PatchStressReliefStyleRequest;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.CustomUserDetails;
@@ -44,6 +47,24 @@ public class UserController {
     @PatchMapping("/info")
     public ApiResponse<Void> updateUserBasicInfo(@RequestBody PatchBasicInfoRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.modifyUserBasicInfo(request, userDetails.getId());
+        return ApiResponse.successOnly();
+    }
+
+    @PatchMapping("/hobby-healing-style")
+    public ApiResponse<Void> updateHobbyHealingStyle(@RequestBody PatchHobbyHealingStyleRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.modifyHobbyHealingStyle(request, userDetails.getId());
+        return ApiResponse.successOnly();
+    }
+
+    @PatchMapping("/stress-relief-style")
+    public ApiResponse<Void> updateStressReliefStyle(@RequestBody PatchStressReliefStyleRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.modifyStressReliefStyle(request, userDetails.getId());
+        return ApiResponse.successOnly();
+    }
+
+    @PatchMapping("/personality")
+    public ApiResponse<Void> updatePersonality(@RequestBody PatchPersonalityRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.modifyPersonality(request, userDetails.getId());
         return ApiResponse.successOnly();
     }
 }

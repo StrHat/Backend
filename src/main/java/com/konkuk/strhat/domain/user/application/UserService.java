@@ -4,6 +4,9 @@ import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
 import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
+import com.konkuk.strhat.domain.user.dto.PatchHobbyHealingStyleRequest;
+import com.konkuk.strhat.domain.user.dto.PatchPersonalityRequest;
+import com.konkuk.strhat.domain.user.dto.PatchStressReliefStyleRequest;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
@@ -82,5 +85,29 @@ public class UserService {
                 Gender.toGender(request.getGender()),
                 Job.toJob(request.getJob())
         );
+    }
+
+    @Transactional
+    public void modifyHobbyHealingStyle(PatchHobbyHealingStyleRequest request, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        user.updateHobbyHealingStyle(request.getHobbyHealingStyle());
+    }
+
+    @Transactional
+    public void modifyStressReliefStyle(PatchStressReliefStyleRequest request, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        user.updateStressReliefStyle(request.getStressReliefStyle());
+    }
+
+    @Transactional
+    public void modifyPersonality(PatchPersonalityRequest request, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        user.updatePersonality(request.getPersonality());
     }
 }
