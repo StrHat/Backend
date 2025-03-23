@@ -41,7 +41,7 @@ public class JwtProvider {
     private static final long ACCESS_TIME = 60 * 60 * 1000L;   // 1시간
     private static final long REFRESH_TIME = 30 * 24 * 60 * 60 * 1000L;    // 30일
     public static final String ACCESS_TOKEN = "Authorization";
-    public static final String REFRESH_TOKEN = "Refresh-Token";
+    public static final String GRANT_TYPE = "Bearer ";
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomUserDetailsService customUserDetailsService;
@@ -61,8 +61,8 @@ public class JwtProvider {
     }
 
     public TokenDto createAllToken(String email) {
-        String accessToken = createAccessToken(email);
-        String refreshToken = createRefreshToken(email);
+        String accessToken = GRANT_TYPE + createAccessToken(email);
+        String refreshToken = GRANT_TYPE + createRefreshToken(email);
         Instant refreshTokenExpiredAt = Instant.now().plus(30, ChronoUnit.DAYS);
 
         return new TokenDto(accessToken, refreshToken, refreshTokenExpiredAt);
