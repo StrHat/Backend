@@ -2,6 +2,7 @@ package com.konkuk.strhat.domain.user.api;
 
 import com.konkuk.strhat.domain.user.application.UserService;
 import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
+import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.CustomUserDetails;
@@ -9,6 +10,7 @@ import com.konkuk.strhat.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,5 +39,11 @@ public class UserController {
     public ApiResponse<GetUserInfoResponse> readUserInfo(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
         GetUserInfoResponse response = userService.findUserInfo(customUserDetails.getId());
         return ApiResponse.success(response);
+    }
+
+    @PatchMapping("/info")
+    public ApiResponse<Void> updateUserBasicInfo(@RequestBody PatchBasicInfoRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.modifyUserBasicInfo(request, userDetails.getId());
+        return ApiResponse.successOnly();
     }
 }

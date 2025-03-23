@@ -3,6 +3,7 @@ package com.konkuk.strhat.domain.user.application;
 import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
+import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
@@ -68,5 +69,18 @@ public class UserService {
     public void processSignOut(String email) {
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByEmail(email);
         refreshToken.ifPresent(refreshTokenRepository::deleteAll);
+    }
+
+    @Transactional
+    public void modifyUserBasicInfo(PatchBasicInfoRequest request, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        user.updateBasicInfo(
+                request.getNickname(),
+                request.getBirth(),
+                Gender.toGender(request.getGender()),
+                Job.toJob(request.getJob())
+        );
     }
 }
