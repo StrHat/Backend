@@ -1,5 +1,6 @@
 package com.konkuk.strhat.domain.user.api;
 
+import com.konkuk.strhat.domain.user.application.PostReissueTokenRequest;
 import com.konkuk.strhat.domain.user.application.UserService;
 import com.konkuk.strhat.domain.user.dto.GetUserInfoResponse;
 import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
@@ -65,6 +66,12 @@ public class UserController {
     @PatchMapping("/personality")
     public ApiResponse<Void> updatePersonality(@RequestBody PatchPersonalityRequest request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.modifyPersonality(request, userDetails.getId());
+        return ApiResponse.successOnly();
+    }
+
+    @PostMapping("/reissue-token")
+    public ApiResponse<Void> reissueToken(@RequestBody PostReissueTokenRequest request) {
+        userService.processReissue(request);
         return ApiResponse.successOnly();
     }
 }

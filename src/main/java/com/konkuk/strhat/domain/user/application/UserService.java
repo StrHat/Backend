@@ -14,6 +14,7 @@ import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.domain.user.exception.DuplicateEmailException;
+import com.konkuk.strhat.domain.user.exception.NotFoundRefreshTokenException;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -109,5 +110,17 @@ public class UserService {
                 .orElseThrow(NotFoundUserException::new);
 
         user.updatePersonality(request.getPersonality());
+    }
+
+    @Transactional
+    public void processReissue(PostReissueTokenRequest request) {
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
+                .orElseThrow(NotFoundRefreshTokenException::new);
+
+        User user = userRepository.findByEmail(refreshToken.getEmail())
+                .orElseThrow(NotFoundUserException::new);
+
+        TokenDto tokenDto = jwtProvider.createAllToken(user.getEmail());
+        refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
     }
 }
