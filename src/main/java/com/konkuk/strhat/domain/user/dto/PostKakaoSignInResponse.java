@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostKakaoSignInResponse {
 
-    private boolean isExist;
+    private boolean userExists;
     private TokenDto tokenDto;
 
     @Builder
-    public PostKakaoSignInResponse(boolean isExist, TokenDto tokenDto) {
-        this.isExist = isExist;
+    public PostKakaoSignInResponse(boolean userExists, TokenDto tokenDto) {
+        this.userExists = userExists;
         this.tokenDto = tokenDto;
     }
 }
