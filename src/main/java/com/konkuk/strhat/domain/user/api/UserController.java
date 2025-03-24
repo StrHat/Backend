@@ -12,6 +12,7 @@ import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.CustomUserDetails;
 import com.konkuk.strhat.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +31,9 @@ public class UserController {
 
     @Operation(summary = "회원가입", description = "회원가입한다.")
     @PostMapping("/sign-up")
-    public ApiResponse<TokenDto> signIn(@RequestBody PostSignUpRequest request) {
-        TokenDto response = userService.createUser(request);
-        return ApiResponse.success(response);
+    public ApiResponse<Void> signIn(@RequestBody PostSignUpRequest request, HttpServletResponse httpServletResponse) {
+        TokenDto response = userService.createUser(request, httpServletResponse);
+        return ApiResponse.successOnly();
     }
 
     @Operation(summary = "로그아웃" ,description = "로그아웃한다.")
@@ -83,8 +84,9 @@ public class UserController {
 
     @Operation(summary = "토큰 재발급", description = "AccessToken을 재발급한다.")
     @PostMapping("/reissue-token")
-    public ApiResponse<Void> reissueToken(@RequestBody PostReissueTokenRequest request) {
-        userService.processReissue(request);
+    public ApiResponse<Void> reissueToken(@RequestBody PostReissueTokenRequest request,
+                                          HttpServletResponse httpServletResponse) {
+        userService.processReissue(request, httpServletResponse);
         return ApiResponse.successOnly();
     }
 }

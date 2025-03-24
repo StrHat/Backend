@@ -5,6 +5,7 @@ import com.konkuk.strhat.domain.user.dto.PostKakaoSignInRequest;
 import com.konkuk.strhat.domain.user.dto.PostKakaoSignInResponse;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class KakaoOAuthService {
     private final JwtProvider jwtProvider;
 
     @Transactional(readOnly = true)
-    public PostKakaoSignInResponse getUserProfileByToken(PostKakaoSignInRequest request) {
+    public PostKakaoSignInResponse getUserProfileByToken(PostKakaoSignInRequest request, HttpServletResponse httpServletResponse) {
         Map<String, Object> userAttributes = getUserAttributesByToken(request.getKakaoAccessToken());
         Map<String, Object> account = (Map<String, Object>) userAttributes.get("kakao_account");
         String email = (String) account.get("email");
@@ -31,9 +32,10 @@ public class KakaoOAuthService {
 
         if(user.isPresent()){
             TokenDto tokenDto = jwtProvider.createAllToken(user.get().getEmail());
-            return new PostKakaoSignInResponse(true, email, tokenDto);
+            jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
+            return new PostKakaoSignInResponse(true, email);
         }
-        return new PostKakaoSignInResponse(false, email, TokenDto.empty());
+        return new PostKakaoSignInResponse(false, email);
     }
 
     private Map<String, Object> getUserAttributesByToken(String kakaoToken){

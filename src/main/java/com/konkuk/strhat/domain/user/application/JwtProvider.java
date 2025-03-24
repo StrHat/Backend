@@ -14,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -138,5 +139,11 @@ public class JwtProvider {
     public Authentication createAuthentication(String email) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public void setResponseHeaderToken(HttpServletResponse response, TokenDto tokenDto) {
+        response.setHeader("Authorization", tokenDto.getAccessToken());
+        response.setHeader("Refresh-Token", tokenDto.getRefreshToken());
+        response.setHeader("Expired-At", tokenDto.getRefreshTokenExpiredAt().toString());
     }
 }

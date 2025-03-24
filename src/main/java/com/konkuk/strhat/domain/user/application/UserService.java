@@ -17,6 +17,7 @@ import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.domain.user.exception.DuplicateEmailException;
 import com.konkuk.strhat.domain.user.exception.NotFoundRefreshTokenException;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public TokenDto createUser(PostSignUpRequest request) {
+    public TokenDto createUser(PostSignUpRequest request, HttpServletResponse httpServletResponse) {
         Optional<User> duplicateUser = userRepository.findByEmail(request.getEmail());
 
         if (duplicateUser.isPresent()) {
@@ -52,6 +53,7 @@ public class UserService {
         TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());
         RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getEmail());
         refreshTokenRepository.save(refreshToken);
+        jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
         return tokenDto;
     }
 
@@ -115,7 +117,7 @@ public class UserService {
     }
 
     @Transactional
-    public void processReissue(PostReissueTokenRequest request) {
+    public void processReissue(PostReissueTokenRequest request, HttpServletResponse httpServletResponse) {
         RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
                 .orElseThrow(NotFoundRefreshTokenException::new);
 
@@ -124,5 +126,6 @@ public class UserService {
 
         TokenDto tokenDto = jwtProvider.createAllToken(user.getEmail());
         refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
+        jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
     }
 }
