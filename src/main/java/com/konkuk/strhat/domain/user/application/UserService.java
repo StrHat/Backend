@@ -45,7 +45,8 @@ public class UserService {
                 Job.toJob(request.getJob()),
                 request.getHobbyHealingStyle(),
                 request.getHobbyHealingStyle(),
-                request.getPersonality());
+                request.getPersonality()
+        );
 
         userRepository.save(user);
         TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());

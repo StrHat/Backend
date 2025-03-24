@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 public class PostKakaoSignInResponse {
 
     private boolean userExists;
+    private String email;
     private TokenDto tokenDto;
 
     @Builder
-    public PostKakaoSignInResponse(boolean userExists, TokenDto tokenDto) {
+    public PostKakaoSignInResponse(boolean userExists, String email, TokenDto tokenDto) {
         this.userExists = userExists;
+        this.email = email;
         this.tokenDto = tokenDto;
     }
 }
