@@ -57,7 +57,7 @@ public class JwtProvider {
         if (token.startsWith("Bearer ")) {
             return token.substring(7);
         }
-        return token;   //예외 던지기
+        return token;
     }
 
     public TokenDto createAllToken(String email) {
