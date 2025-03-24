@@ -1,4 +1,4 @@
-package com.konkuk.strhat.domain.user.application;
+package com.konkuk.strhat.domain.user.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
