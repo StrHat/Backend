@@ -75,7 +75,7 @@ public class UserService {
 
     @Transactional
     public void processSignOut(String email) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByEmail(email);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
         refreshToken.ifPresent(refreshTokenRepository::deleteAll);
     }
 
@@ -118,13 +118,17 @@ public class UserService {
 
     @Transactional
     public void processReissue(PostReissueTokenRequest request, HttpServletResponse httpServletResponse) {
-        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(request.getRefreshToken())
+        String requestToken = request.getRefreshToken();
+        if (requestToken.startsWith("Bearer")) {
+            requestToken = requestToken.substring(7);
+        }
+
+        String email = jwtProvider.getEmailByToken(requestToken);
+
+        RefreshToken refreshToken = refreshTokenRepository.findRefreshTokenByEmail(email)
                 .orElseThrow(NotFoundRefreshTokenException::new);
 
-        User user = userRepository.findByEmail(refreshToken.getEmail())
-                .orElseThrow(NotFoundUserException::new);
-
-        TokenDto tokenDto = jwtProvider.createAllToken(user.getEmail());
+        TokenDto tokenDto = jwtProvider.createAllToken(email);
         refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
         jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
     }

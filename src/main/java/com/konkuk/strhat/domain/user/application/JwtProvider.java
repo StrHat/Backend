@@ -123,7 +123,7 @@ public class JwtProvider {
     public Boolean validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
         String email = getEmailByToken(refreshToken);
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByEmail(email);
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
         return optionalRefreshToken.isPresent();
     }
 

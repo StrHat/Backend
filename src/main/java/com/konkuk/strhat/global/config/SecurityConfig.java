@@ -48,6 +48,7 @@ public class SecurityConfig {
         return web -> web.ignoring().requestMatchers(
                 "/api/v1/users/sign-up",
                 "/api/v1/auth/kakao",
+                "/api/v1/users/reissue-token",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/v3/api-docs/**",
