@@ -7,6 +7,7 @@ import com.konkuk.strhat.domain.user.dto.PatchBasicInfoRequest;
 import com.konkuk.strhat.domain.user.dto.PatchHobbyHealingStyleRequest;
 import com.konkuk.strhat.domain.user.dto.PatchPersonalityRequest;
 import com.konkuk.strhat.domain.user.dto.PatchStressReliefStyleRequest;
+import com.konkuk.strhat.domain.user.dto.PostReissueTokenRequest;
 import com.konkuk.strhat.domain.user.dto.PostSignUpRequest;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
