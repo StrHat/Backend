@@ -29,7 +29,7 @@ public class User extends BaseCreatedEntity {
     @Column(name = "nickname", length = 10, nullable = false)
     private String nickname;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth", nullable = false, columnDefinition = "YEAR")
     private Integer birth;
 
     @Enumerated(EnumType.STRING)
