@@ -32,7 +32,10 @@ public class SecurityConfig {
                         sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll())
+                        .requestMatchers("/api/v1/users/sign-up", "/api/v1/users/reissue-token").permitAll()
+                        .requestMatchers("/api/v1/auth/kakao").permitAll()
+                        .requestMatchers("/swagger-ui/**", "swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
