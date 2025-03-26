@@ -1,7 +1,6 @@
-package com.konkuk.strhat.stress_summary.entity;
+package com.konkuk.strhat.domain.stress_summary.entity;
 
-import com.konkuk.strhat.user.entity.User;
-import com.konkuk.strhat.global.entity.BaseCreatedEntity;
+import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,15 +26,15 @@ public class StressSummary {
     @Column(name = "week_end_date", nullable = false)
     private LocalDate weekEndDate;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public StressSummary(String content, LocalDate weekStartDate, LocalDate weekEndDate, User user) {
+    public StressSummary(String content, LocalDate weekStartDate, LocalDate weekEndDate) {
         this.content = content;
         this.weekStartDate = weekStartDate;
         this.weekEndDate = weekEndDate;
-        this.user = user;
     }
 }

@@ -1,15 +1,13 @@
-package com.konkuk.strhat.user.entity;
+package com.konkuk.strhat.domain.user.entity;
 
-import com.konkuk.strhat.diary.entity.Diary;
+import com.konkuk.strhat.domain.diary.entity.Diary;
+import com.konkuk.strhat.domain.user.enums.Gender;
+import com.konkuk.strhat.domain.user.enums.Job;
+import com.konkuk.strhat.domain.self_diagnosis.entity.SelfDiagnosis;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
-import com.konkuk.strhat.self_diagnosis.entity.SelfDiagnosis;
-import com.konkuk.strhat.stress_summary.entity.StressSummary;
-import com.konkuk.strhat.user.enums.Gender;
-import com.konkuk.strhat.user.enums.Job;
+import com.konkuk.strhat.domain.stress_summary.entity.StressSummary;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +23,14 @@ public class User extends BaseCreatedEntity {
     @Column(name = "user_id", updatable = false)
     private Long id;
 
-    @Size(max = 10, message = "닉네임은 10자 이하로 입력해주세요.")
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "nickname", length = 10, nullable = false)
     private String nickname;
 
-    @Column(name = "birth", nullable = false)
-    private LocalDate birth;
+    @Column(name = "birth", nullable = false, columnDefinition = "YEAR")
+    private Integer birth;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", length = 10, nullable = false)
@@ -40,15 +40,12 @@ public class User extends BaseCreatedEntity {
     @Column(name = "job", length = 10, nullable = false)
     private Job job;
 
-    @Size(max = 1000, message = "취미 및 힐링방법은 1000자 이하로 입력해주세요.")
     @Column(name = "hobby_healing_style", length = 1000, nullable = false)
     private String hobbyHealingStyle;
 
-    @Size(max = 1000, message = "스트레스 해소 방법은 1000자 이하로 입력해주세요.")
     @Column(name = "stress_relief_style", length = 1000, nullable = false)
     private String stressReliefStyle;
 
-    @Size(max = 1000, message = "성향 정보는 1000자 이하로 입력해주세요.")
     @Column(name = "personality", length = 1000, nullable = false)
     private String personality;
 
@@ -63,8 +60,9 @@ public class User extends BaseCreatedEntity {
 
 
     @Builder
-    public User(String nickname, LocalDate birth, Gender gender, Job job,
+    public User(String email, String nickname, Integer birth, Gender gender, Job job,
                 String hobbyHealingStyle, String stressReliefStyle, String personality) {
+        this.email = email;
         this.nickname = nickname;
         this.birth = birth;
         this.gender = gender;
@@ -77,4 +75,39 @@ public class User extends BaseCreatedEntity {
         this.stressSummaries = new ArrayList<>();
     }
 
+    // 비즈니스 로직 메소드
+    public void updateBasicInfo(String nickname, Integer birth, Gender gender, Job job) {
+        this.nickname = nickname;
+        this.birth = birth;
+        this.gender = gender;
+        this.job = job;
+    }
+
+    public void updateHobbyHealingStyle(String hobbyHealingStyle) {
+        this.hobbyHealingStyle = hobbyHealingStyle;
+    }
+
+    public void updateStressReliefStyle(String stressReliefStyle) {
+        this.stressReliefStyle = stressReliefStyle;
+    }
+
+    public void updatePersonality(String personality) {
+        this.personality = personality;
+    }
+
+    // 연관관계 편의 메서드
+    public void addSelfDiagnosis(SelfDiagnosis selfDiagnosis) {
+        selfDiagnoses.add(selfDiagnosis);
+        selfDiagnosis.setUser(this);
+    }
+
+    public void addDiary(Diary diary) {
+        diaries.add(diary);
+        diary.setUser(this);
+    }
+
+    public void addStressSummary(StressSummary stressSummary) {
+        stressSummaries.add(stressSummary);
+        stressSummary.setUser(this);
+    }
 }

@@ -1,6 +1,6 @@
-package com.konkuk.strhat.diary.entity;
+package com.konkuk.strhat.domain.diary.entity;
 
-import com.konkuk.strhat.user.entity.User;
+import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,24 +21,20 @@ public class Diary {
     private String content;
 
     @Column(name = "emotion", nullable = false)
-    private Integer emotion;  // 1~5 사이의 숫자로 감정 저장
+    private Integer emotion;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "diary_date", nullable = false, unique = true)
+    private LocalDate diaryDate;
 
-    @Column(name = "chat_available", nullable = false)
-    private Boolean chatAvailable = true;
-
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public Diary(String content, Integer emotion, LocalDate date, Boolean chatAvailable, User user) {
+    public Diary(String content, Integer emotion, LocalDate diaryDate) {
         this.content = content;
         this.emotion = emotion;
-        this.date = date;
-        this.chatAvailable = chatAvailable;
-        this.user = user;
+        this.diaryDate = diaryDate;
     }
 }

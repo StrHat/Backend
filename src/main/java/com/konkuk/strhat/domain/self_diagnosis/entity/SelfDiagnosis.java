@@ -1,16 +1,16 @@
-package com.konkuk.strhat.self_diagnosis.entity;
+package com.konkuk.strhat.domain.self_diagnosis.entity;
 
-import com.konkuk.strhat.global.entity.BaseCreatedEntity;
-import com.konkuk.strhat.self_diagnosis.enums.SelfDiagnosisType;
-import com.konkuk.strhat.user.entity.User;
+import com.konkuk.strhat.domain.self_diagnosis.enums.SelfDiagnosisType;
+import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "self_diagnosis")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SelfDiagnosis extends BaseCreatedEntity {
+public class SelfDiagnosis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,18 @@ public class SelfDiagnosis extends BaseCreatedEntity {
     @Column(name = "type", length = 10, nullable = false)
     private SelfDiagnosisType type;
 
+    @Column(name = "self_diagnosis_date", nullable = false, unique = true)
+    private LocalDate selfDiagnosisDate;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Builder
-    public SelfDiagnosis(Integer score, SelfDiagnosisType type, User user) {
+    public SelfDiagnosis(Integer score, SelfDiagnosisType type) {
         this.score = score;
         this.type = type;
-        this.user = user;
+        this.selfDiagnosisDate = LocalDate.now();
     }
 }

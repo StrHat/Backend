@@ -2,14 +2,16 @@ package com.konkuk.strhat.global.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-@AllArgsConstructor
+@Getter
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
     @JsonProperty(value = "isSuccess")
-    private final boolean isSuccess;
+    private final boolean success;
 
     @JsonProperty(value = "response")
     private final T response;
@@ -18,14 +20,22 @@ public class ApiResponse<T> {
     private final ErrorResponse errorResponse;
 
     public static <T> ApiResponse<T> success(T response) {
-        return new ApiResponse<>(true, response, null);
+        return ApiResponse.<T>builder()
+                .success(true)
+                .response(response)
+                .build();
     }
 
-    public static ApiResponse<?> error(ErrorResponse response) {
-        return new ApiResponse<>(true, response, null);
+    public static ApiResponse<?> error(ErrorResponse errorResponse) {
+        return ApiResponse.builder()
+                .success(false)
+                .errorResponse(errorResponse)
+                .build();
     }
 
     public static ApiResponse<Void> successOnly() {
-        return new ApiResponse<>(true, null, null);
+        return ApiResponse.<Void>builder()
+                .success(true)
+                .build();
     }
 }
