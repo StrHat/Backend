@@ -22,6 +22,10 @@ spring:
       port: 6379
       password: ${REDIS_PASSWORD}
 
+swagger:
+  server:
+    url: ${SWAGGER_URL}
+
 jwt:
   secret: ${JWT_SECRET}
 
