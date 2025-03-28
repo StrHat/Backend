@@ -11,31 +11,19 @@ import lombok.Getter;
 public class ApiResponse<T> {
 
     @JsonProperty(value = "isSuccess")
-    private final boolean success;
+    private final boolean success = true;
 
     @JsonProperty(value = "response")
     private final T response;
 
-    @JsonProperty(value = "error")
-    private final ErrorResponse errorResponse;
-
     public static <T> ApiResponse<T> success(T response) {
         return ApiResponse.<T>builder()
-                .success(true)
                 .response(response)
-                .build();
-    }
-
-    public static ApiResponse<?> error(ErrorResponse errorResponse) {
-        return ApiResponse.builder()
-                .success(false)
-                .errorResponse(errorResponse)
                 .build();
     }
 
     public static ApiResponse<Void> successOnly() {
         return ApiResponse.<Void>builder()
-                .success(true)
                 .build();
     }
 }
