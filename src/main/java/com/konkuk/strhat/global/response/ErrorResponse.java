@@ -1,5 +1,6 @@
 package com.konkuk.strhat.global.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.konkuk.strhat.global.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ErrorResponse {
+    @JsonProperty(value = "isSuccess")
+    private final boolean success = false;
     private final int status;
     private final String code;
     private final String message;
