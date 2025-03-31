@@ -1,4 +1,4 @@
-package com.konkuk.strhat.global.exception;
+package com.konkuk.strhat.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +18,7 @@ public enum ErrorCode {
     UNSUPPORTED_GENDER_TYPE(HttpStatus.BAD_REQUEST, "U400", "지원하지 않는 성별 타입입니다."),
     UNSUPPORTED_JOB_TYPE(HttpStatus.BAD_REQUEST, "U400", "지원하지 않는 직업 타입입니다."),
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "U400", "유효하지 않은 값을 입력하였습니다."),
+    INVALID_INPUT_FORMAT(HttpStatus.BAD_REQUEST, "U400", "올바르지 않은 입력 형식입니다."),
 
     // JWT
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "J404", "토큰이 존재하지 않습니다.");
