@@ -23,11 +23,11 @@ public class DiaryService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public CheckDiaryResponse checkDiaryExist(Long currentUserId, String date){
+    public CheckDiaryResponse checkDiaryExist(Long currentUserId, LocalDate date){
         User user = userRepository.findById(currentUserId)
                 .orElseThrow(NotFoundUserException::new);
 
-        Optional<Diary> diary = diaryRepository.findByDiaryDateAndUser(parseToLocalDate(date), user);
+        Optional<Diary> diary = diaryRepository.findByDiaryDateAndUser(date, user);
 
         CheckDiaryResponse response;
         if(diary.isPresent()){

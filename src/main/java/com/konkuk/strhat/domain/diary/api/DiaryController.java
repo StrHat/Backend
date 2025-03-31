@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import static com.konkuk.strhat.global.util.DateParser.parseToLocalDate;
+
 @RestController
 @RequestMapping("/api/v1/diary")
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class DiaryController {
     @GetMapping("/exists")
     public ApiResponse<CheckDiaryResponse> signIn(@RequestParam String date) {
         Long userId = SecurityUtil.getCurrentUserId();
-        CheckDiaryResponse response = diaryService.checkDiaryExist(userId, date);
+        CheckDiaryResponse response = diaryService.checkDiaryExist(userId, parseToLocalDate(date));
         return ApiResponse.success(response);
     }
 
