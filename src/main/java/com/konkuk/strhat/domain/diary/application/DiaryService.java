@@ -8,6 +8,7 @@ import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public CheckDiaryResponse checkDiaryExist(Long currentUserId, String date){
         User user = userRepository.findById(currentUserId)
                 .orElseThrow(NotFoundUserException::new);
