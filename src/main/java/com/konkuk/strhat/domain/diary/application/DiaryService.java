@@ -2,24 +2,30 @@ package com.konkuk.strhat.domain.diary.application;
 
 import com.konkuk.strhat.domain.diary.dao.DiaryRepository;
 import com.konkuk.strhat.domain.diary.dto.CheckDiaryResponse;
+import com.konkuk.strhat.domain.diary.dto.DiarySaveRequest;
+import com.konkuk.strhat.domain.diary.dto.DiarySaveResponse;
 import com.konkuk.strhat.domain.diary.entity.Diary;
+import com.konkuk.strhat.domain.diary.entity.Feedback;
+import com.konkuk.strhat.domain.diary.exception.DiarySaveException;
+import com.konkuk.strhat.domain.diary.exception.DuplicateDiaryException;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static com.konkuk.strhat.global.util.DateParser.parseToLocalDate;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final FeedbackService feedbackService;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -45,8 +51,35 @@ public class DiaryService {
                     .summary(null)
                     .build();
         }
-
         return response;
     }
 
+    @Transactional
+    public Diary saveDiary(Long currentUserId, DiarySaveRequest request) {
+
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        if(diaryRepository.existsByDiaryDateAndUser(request.getDate(), user)){
+            throw new DuplicateDiaryException();
+        }
+
+        try {
+            Diary diary = request.toDiaryEntity(user);
+            return diaryRepository.save(diary);
+        } catch (Exception e) {
+            throw new DiarySaveException();
+        }
+    }
+
+    @Transactional
+    public DiarySaveResponse getFeedback(Diary diary) {
+        Feedback feedback = feedbackService.generateFeedbackAndSave(diary);
+        return DiarySaveResponse.builder()
+                .summary(feedback.getDiarySummary())
+                .positiveKeywords(feedback.getPositiveEmotionArray())
+                .negativeKeywords(feedback.getNegativeEmotionArray())
+                .stressReliefSuggestions(feedback.getStressReliefSuggestion())
+                .build();
+    }
 }
