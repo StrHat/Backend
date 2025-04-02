@@ -18,11 +18,12 @@ public class PostSignUpRequest {
     private String email;
 
     @NotBlank
+    @Length(max = 5)
     private String nickname;
 
     @NotNull
-    @Min(1000)
-    @Max(9999)
+    @Min(1901)
+    @Max(2155)
     private Integer birth;
 
     @NotBlank
