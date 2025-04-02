@@ -1,7 +1,8 @@
 package com.konkuk.strhat.domain.user.dto;
 
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,7 +21,8 @@ public class PostSignUpRequest {
     private String nickname;
 
     @NotNull(message = "출생년도는 필수 입력값입니다.")
-    @Digits(integer = 4, fraction = 0, message = "올바른 출생년도 형식이 아닙니다.")
+    @Min(1000)
+    @Max(9999)
     private Integer birth;
 
     @NotBlank(message = "성별은 필수 입력값입니다.")
