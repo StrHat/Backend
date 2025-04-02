@@ -1,7 +1,7 @@
 package com.konkuk.strhat.domain.user.exception;
 
-import com.konkuk.strhat.global.exception.CustomException;
-import com.konkuk.strhat.global.exception.ErrorCode;
+import com.konkuk.strhat.global.error.CustomException;
+import com.konkuk.strhat.global.error.ErrorCode;
 
 public class NotFoundUserException extends CustomException {
 
