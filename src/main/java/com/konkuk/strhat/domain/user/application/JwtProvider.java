@@ -3,6 +3,7 @@ package com.konkuk.strhat.domain.user.application;
 import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
+import com.konkuk.strhat.domain.user.exception.MissingTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -55,6 +56,11 @@ public class JwtProvider {
 
     public String getHeaderToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (token == null || token.isBlank()) {
+            throw new MissingTokenException();
+        }
+
         if (token.startsWith("Bearer ")) {
             return token.substring(7);
         }
@@ -102,10 +108,11 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException exception) {
+            throw exception;
         } catch (UnsupportedJwtException
                  | MalformedJwtException
                  | SignatureException
-                 | ExpiredJwtException
                  | IllegalArgumentException exception) {
             throw new JwtException("");
         }
