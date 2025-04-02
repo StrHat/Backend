@@ -1,4 +1,4 @@
-package com.konkuk.strhat.global.exception;
+package com.konkuk.strhat.global.error;
 
 import lombok.Getter;
 
@@ -12,8 +12,8 @@ public class CustomException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public CustomException(String message, ErrorCode errorCode) {
-        super(message);
+    public CustomException(ErrorCode errorCode, String message) {
+        super(errorCode.getMessage() + " " + message);
         this.errorCode = errorCode;
     }
 }
