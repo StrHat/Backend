@@ -71,9 +71,8 @@ public class JwtProvider {
     public TokenDto createAllToken(String email) {
         String accessToken = GRANT_TYPE + createAccessToken(email);
         String refreshToken = GRANT_TYPE + createRefreshToken(email);
-        Instant refreshTokenExpiredAt = Instant.now().plus(30, ChronoUnit.DAYS);
 
-        return new TokenDto(accessToken, refreshToken, refreshTokenExpiredAt);
+        return new TokenDto(accessToken, refreshToken);
     }
 
     public String createAccessToken(String email) {
@@ -155,6 +154,5 @@ public class JwtProvider {
     public void setResponseHeaderToken(HttpServletResponse response, TokenDto tokenDto) {
         response.setHeader("Authorization", tokenDto.getAccessToken());
         response.setHeader("Refresh-Token", tokenDto.getRefreshToken());
-        response.setHeader("Expired-At", tokenDto.getRefreshTokenExpiredAt().toString());
     }
 }
