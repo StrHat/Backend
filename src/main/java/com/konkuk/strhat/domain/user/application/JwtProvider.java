@@ -4,6 +4,7 @@ import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
 import com.konkuk.strhat.domain.user.exception.MissingTokenException;
+import com.konkuk.strhat.domain.user.exception.NotFoundRefreshTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -127,11 +128,14 @@ public class JwtProvider {
                 .get("email", String.class);
     }
 
-    public Boolean validateRefreshToken(String refreshToken) {
+    public RefreshToken validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
         String email = getEmailByToken(refreshToken);
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
-        return optionalRefreshToken.isPresent();
+        if (optionalRefreshToken.isEmpty()) {
+            throw new NotFoundRefreshTokenException();
+        }
+        return optionalRefreshToken.get();
     }
 
     public Date getExpiredAt(String token) {
