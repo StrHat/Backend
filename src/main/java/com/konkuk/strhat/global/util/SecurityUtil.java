@@ -21,5 +21,18 @@ public class SecurityUtil {
 
         return customUserDetails.getId();
     }
+
+    public static String getCurrentUserEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new NotFoundUserException();
+        }
+
+        if (!(authentication.getPrincipal() instanceof CustomUserDetails customUserDetails)) {
+            throw new NotFoundUserException();
+        }
+
+        return customUserDetails.getEmail();
+    }
 }
 
