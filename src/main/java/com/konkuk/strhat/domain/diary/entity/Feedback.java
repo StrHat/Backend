@@ -51,14 +51,19 @@ public class Feedback {
                     String positiveEmotions,
                     String negativeEmotions,
                     String stressReliefSuggestion,
-                    LocalDate feedbackDate,
                     Diary diary
     ) {
         this.diarySummary = diarySummary;
         this.positiveEmotions = positiveEmotions;
         this.negativeEmotions = negativeEmotions;
         this.stressReliefSuggestion = stressReliefSuggestion;
-        this.feedbackDate = feedbackDate;
+        this.feedbackDate = diary.getDiaryDate();
         this.diary = diary;
+    }
+    public String[] getPositiveEmotionArray() {
+        return this.positiveEmotions.split(",\\s*");
+    }
+    public String[] getNegativeEmotionArray() {
+        return this.negativeEmotions.split(",\\s*");
     }
 }
