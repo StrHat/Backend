@@ -20,7 +20,7 @@ public class DiarySaveRequest {
     private int emotion;
 
     @NotBlank
-    @Size(max = 1500)
+    @Size(min = 20, max = 1500)
     private String content;
 
     public Diary toDiaryEntity(User user) {
