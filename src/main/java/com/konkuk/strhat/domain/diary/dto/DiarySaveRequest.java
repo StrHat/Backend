@@ -29,7 +29,7 @@ public class DiarySaveRequest {
                 .emotion(this.emotion)
                 .diaryDate(this.date)
                 .build();
-        diary.setUser(user);
+        user.addDiary(diary);
         return diary;
     }
 }
