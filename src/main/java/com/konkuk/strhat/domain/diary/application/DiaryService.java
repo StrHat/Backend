@@ -1,10 +1,8 @@
 package com.konkuk.strhat.domain.diary.application;
 
 import com.konkuk.strhat.domain.diary.dao.DiaryRepository;
-import com.konkuk.strhat.domain.diary.dto.CheckDiaryResponse;
-import com.konkuk.strhat.domain.diary.dto.DiaryContentResponse;
-import com.konkuk.strhat.domain.diary.dto.DiarySaveRequest;
-import com.konkuk.strhat.domain.diary.dto.DiarySaveResponse;
+import com.konkuk.strhat.domain.diary.dao.FeedbackRepository;
+import com.konkuk.strhat.domain.diary.dto.*;
 import com.konkuk.strhat.domain.diary.entity.Diary;
 import com.konkuk.strhat.domain.diary.entity.Feedback;
 import com.konkuk.strhat.domain.diary.exception.DiarySaveException;
@@ -12,6 +10,7 @@ import com.konkuk.strhat.domain.diary.exception.DuplicateDiaryException;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
+import com.konkuk.strhat.domain.diary.exception.NotFoundFeedbackException;
 import com.konkuk.strhat.domain.diary.exception.DiaryReadException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,7 @@ import java.util.Optional;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final FeedbackRepository feedbackRepository;
     private final FeedbackService feedbackService;
     private final UserRepository userRepository;
 
@@ -94,5 +94,19 @@ public class DiaryService {
                 .orElseThrow(DiaryReadException::new);
 
         return DiaryContentResponse.toDiaryContentResponse(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public FeedbackResponse readFeedback(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        Feedback feedback = feedbackRepository.findByDiary(diary)
+                .orElseThrow(NotFoundFeedbackException::new);
+
+        return FeedbackResponse.toFeedbackResponse(feedback);
     }
 }
