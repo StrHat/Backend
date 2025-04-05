@@ -7,7 +7,12 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "self_diagnosis")
+@Table(
+        name = "self_diagnosis",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "self_diagnosis_date"})
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SelfDiagnosis {
@@ -24,7 +29,7 @@ public class SelfDiagnosis {
     @Column(name = "type", length = 10, nullable = false)
     private SelfDiagnosisType type;
 
-    @Column(name = "self_diagnosis_date", nullable = false, unique = true)
+    @Column(name = "self_diagnosis_date", nullable = false)
     private LocalDate selfDiagnosisDate;
 
     @Setter
