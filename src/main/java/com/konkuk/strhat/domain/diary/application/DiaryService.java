@@ -2,6 +2,7 @@ package com.konkuk.strhat.domain.diary.application;
 
 import com.konkuk.strhat.domain.diary.dao.DiaryRepository;
 import com.konkuk.strhat.domain.diary.dto.CheckDiaryResponse;
+import com.konkuk.strhat.domain.diary.dto.DiaryContentResponse;
 import com.konkuk.strhat.domain.diary.dto.DiarySaveRequest;
 import com.konkuk.strhat.domain.diary.dto.DiarySaveResponse;
 import com.konkuk.strhat.domain.diary.entity.Diary;
@@ -11,6 +12,7 @@ import com.konkuk.strhat.domain.diary.exception.DuplicateDiaryException;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
+import com.konkuk.strhat.domain.diary.exception.DiaryReadException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -81,5 +83,16 @@ public class DiaryService {
                 .negativeKeywords(feedback.getNegativeEmotionArray())
                 .stressReliefSuggestions(feedback.getStressReliefSuggestion())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public DiaryContentResponse readDiary(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        return DiaryContentResponse.toDiaryContentResponse(diary);
     }
 }

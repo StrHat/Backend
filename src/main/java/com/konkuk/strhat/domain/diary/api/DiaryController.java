@@ -2,6 +2,7 @@ package com.konkuk.strhat.domain.diary.api;
 
 import com.konkuk.strhat.domain.diary.application.DiaryService;
 import com.konkuk.strhat.domain.diary.dto.CheckDiaryResponse;
+import com.konkuk.strhat.domain.diary.dto.DiaryContentResponse;
 import com.konkuk.strhat.domain.diary.dto.DiarySaveRequest;
 import com.konkuk.strhat.domain.diary.dto.DiarySaveResponse;
 import com.konkuk.strhat.domain.diary.entity.Diary;
@@ -37,6 +38,14 @@ public class DiaryController {
         Long userId = SecurityUtil.getCurrentUserId();
         Diary diary = diaryService.saveDiary(userId, request);
         DiarySaveResponse response = diaryService.getFeedback(diary);
+        return ApiResponse.success(response);
+    }
+
+    @Operation(summary = "일기 조회", description = "사용자가 작성한 일기를 조회한다. (일기 전문보기)")
+    @GetMapping
+    public ApiResponse<DiaryContentResponse> readDiary(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        Long userId = SecurityUtil.getCurrentUserId();
+        DiaryContentResponse response = diaryService.readDiary(userId, date);
         return ApiResponse.success(response);
     }
 
