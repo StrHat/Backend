@@ -34,4 +34,6 @@ springdoc:
     path: /api-test
     groups-order: DESC  # path, query, body, response ? ??
     tags-sorter: alpha  # ?? ??? ? ??
-    operations-sorter: method  # delete - get - patch - post - put ? ??
+    operations-sorter: default
+    persist-authorization: true
+    display-request-duration: true
