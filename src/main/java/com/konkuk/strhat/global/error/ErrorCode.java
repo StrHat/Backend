@@ -24,6 +24,9 @@ public enum ErrorCode {
 
     // JWT
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "J404", "토큰이 존재하지 않습니다."),
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "J400", "올바르지 않은 토큰값입니다."),
+    TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "J401", "토큰의 유효기간이 만료되었습니다."),
+    MISSING_TOKEN(HttpStatus.UNAUTHORIZED, "J401", "헤더에 토큰이 존재하지 않습니다."),
 
     // AI (GPI API)
     GPT_FEEDBACK_GENERATION_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 이용한 피드백 생성에 실패하였습니다."),

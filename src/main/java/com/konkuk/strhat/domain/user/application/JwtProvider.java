@@ -3,6 +3,8 @@ package com.konkuk.strhat.domain.user.application;
 import com.konkuk.strhat.domain.user.dao.RefreshTokenRepository;
 import com.konkuk.strhat.domain.user.dto.TokenDto;
 import com.konkuk.strhat.domain.user.entity.RefreshToken;
+import com.konkuk.strhat.domain.user.exception.MissingTokenException;
+import com.konkuk.strhat.domain.user.exception.NotFoundRefreshTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -55,6 +57,11 @@ public class JwtProvider {
 
     public String getHeaderToken(HttpServletRequest request) {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (token == null || token.isBlank()) {
+            throw new MissingTokenException();
+        }
+
         if (token.startsWith("Bearer ")) {
             return token.substring(7);
         }
@@ -64,9 +71,8 @@ public class JwtProvider {
     public TokenDto createAllToken(String email) {
         String accessToken = GRANT_TYPE + createAccessToken(email);
         String refreshToken = GRANT_TYPE + createRefreshToken(email);
-        Instant refreshTokenExpiredAt = Instant.now().plus(30, ChronoUnit.DAYS);
 
-        return new TokenDto(accessToken, refreshToken, refreshTokenExpiredAt);
+        return new TokenDto(accessToken, refreshToken);
     }
 
     public String createAccessToken(String email) {
@@ -102,10 +108,11 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token);
             return true;
+        } catch (ExpiredJwtException exception) {
+            throw exception;
         } catch (UnsupportedJwtException
                  | MalformedJwtException
                  | SignatureException
-                 | ExpiredJwtException
                  | IllegalArgumentException exception) {
             throw new JwtException("");
         }
@@ -120,11 +127,14 @@ public class JwtProvider {
                 .get("email", String.class);
     }
 
-    public Boolean validateRefreshToken(String refreshToken) {
+    public RefreshToken validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
         String email = getEmailByToken(refreshToken);
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
-        return optionalRefreshToken.isPresent();
+        if (optionalRefreshToken.isEmpty()) {
+            throw new NotFoundRefreshTokenException();
+        }
+        return optionalRefreshToken.get();
     }
 
     public Date getExpiredAt(String token) {
@@ -144,6 +154,5 @@ public class JwtProvider {
     public void setResponseHeaderToken(HttpServletResponse response, TokenDto tokenDto) {
         response.setHeader("Authorization", tokenDto.getAccessToken());
         response.setHeader("Refresh-Token", tokenDto.getRefreshToken());
-        response.setHeader("Expired-At", tokenDto.getRefreshTokenExpiredAt().toString());
     }
 }

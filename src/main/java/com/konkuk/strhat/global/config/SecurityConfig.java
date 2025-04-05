@@ -2,6 +2,7 @@ package com.konkuk.strhat.global.config;
 
 import com.konkuk.strhat.domain.user.application.JwtProvider;
 import com.konkuk.strhat.global.filter.JwtAuthenticationFilter;
+import com.konkuk.strhat.global.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class)
                 .build();
     }
 
