@@ -15,7 +15,6 @@ import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.domain.user.exception.DuplicateEmailException;
-import com.konkuk.strhat.domain.user.exception.NotFoundRefreshTokenException;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -119,16 +118,13 @@ public class UserService {
     @Transactional
     public void processReissue(PostReissueTokenRequest request, HttpServletResponse httpServletResponse) {
         String requestToken = request.getRefreshToken();
+
         if (requestToken.startsWith("Bearer")) {
             requestToken = requestToken.substring(7);
         }
 
-        String email = jwtProvider.getEmailByToken(requestToken);
-
-        RefreshToken refreshToken = refreshTokenRepository.findRefreshTokenByEmail(email)
-                .orElseThrow(NotFoundRefreshTokenException::new);
-
-        TokenDto tokenDto = jwtProvider.createAllToken(email);
+        RefreshToken refreshToken = jwtProvider.validateRefreshToken(requestToken);
+        TokenDto tokenDto = jwtProvider.createAllToken(refreshToken.getEmail());
         refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
         jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
     }

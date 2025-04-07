@@ -1,13 +1,11 @@
 package com.konkuk.strhat.domain.diary.application;
 
 import com.konkuk.strhat.domain.diary.dao.DiaryRepository;
-import com.konkuk.strhat.domain.diary.dto.CheckDiaryResponse;
-import com.konkuk.strhat.domain.diary.dto.DiarySaveRequest;
-import com.konkuk.strhat.domain.diary.dto.DiarySaveResponse;
+import com.konkuk.strhat.domain.diary.dao.FeedbackRepository;
+import com.konkuk.strhat.domain.diary.dto.*;
 import com.konkuk.strhat.domain.diary.entity.Diary;
 import com.konkuk.strhat.domain.diary.entity.Feedback;
-import com.konkuk.strhat.domain.diary.exception.DiarySaveException;
-import com.konkuk.strhat.domain.diary.exception.DuplicateDiaryException;
+import com.konkuk.strhat.domain.diary.exception.*;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
@@ -25,6 +23,7 @@ import java.util.Optional;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final FeedbackRepository feedbackRepository;
     private final FeedbackService feedbackService;
     private final UserRepository userRepository;
 
@@ -74,12 +73,55 @@ public class DiaryService {
 
     @Transactional
     public DiarySaveResponse getFeedback(Diary diary) {
-        Feedback feedback = feedbackService.generateFeedbackAndSave(diary);
+        Feedback feedback = tryGenerateFeedbackWithRetry(diary, 2);
         return DiarySaveResponse.builder()
                 .summary(feedback.getDiarySummary())
                 .positiveKeywords(feedback.getPositiveEmotionArray())
                 .negativeKeywords(feedback.getNegativeEmotionArray())
                 .stressReliefSuggestions(feedback.getStressReliefSuggestion())
                 .build();
+    }
+
+    private Feedback tryGenerateFeedbackWithRetry(Diary diary, int maxRetries) {
+        for (int attempt = 1; attempt <= maxRetries + 1; attempt++) {
+            try {
+                return feedbackService.generateFeedbackAndSave(diary);
+            } catch (FeedbackGenerateException e) {
+                boolean isLastAttempt = (attempt == maxRetries + 1);
+                log.warn("피드백 생성 실패 (시도 {}/{}): {}", attempt, maxRetries + 1, e.getMessage());
+
+                if (isLastAttempt) {
+                    log.error("피드백 생성 최종 실패: 총 {}회 시도했으나 모두 실패했습니다.", maxRetries + 1, e);
+                    throw new UnknownFeedbackGenerateException("AI 피드백 생성에 총 " + (maxRetries + 1) + "회 시도했으나 모두 실패했습니다. " + e.getMessage());
+                }
+            }
+        }
+        throw new UnknownFeedbackGenerateException("피드백 생성 재시도 로직에서 예외가 발생하지 않았으나, 피드백도 생성되지 않았습니다.");
+    }
+
+
+    @Transactional(readOnly = true)
+    public DiaryContentResponse readDiary(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        return DiaryContentResponse.toDiaryContentResponse(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public FeedbackResponse readFeedback(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        Feedback feedback = feedbackRepository.findByDiary(diary)
+                .orElseThrow(NotFoundFeedbackException::new);
+
+        return FeedbackResponse.of(feedback);
     }
 }

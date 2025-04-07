@@ -7,11 +7,15 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "diary")
+@Table(
+        name = "diary",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "diary_date"})
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Diary {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +28,7 @@ public class Diary {
     @Column(name = "emotion", nullable = false)
     private Integer emotion;
 
-    @Column(name = "diary_date", nullable = false, unique = true)
+    @Column(name = "diary_date", nullable = false)
     private LocalDate diaryDate;
 
     @Setter
