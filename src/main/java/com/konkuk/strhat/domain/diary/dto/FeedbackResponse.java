@@ -12,7 +12,7 @@ public class FeedbackResponse {
     String[] negativeKeywords;
     String stressReliefSuggestions;
 
-    public static FeedbackResponse toFeedbackResponse(Feedback feedback){
+    public static FeedbackResponse of(Feedback feedback){
         return FeedbackResponse.builder()
                 .summary(feedback.getDiarySummary())
                 .positiveKeywords(feedback.getPositiveEmotionArray())
