@@ -9,4 +9,5 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
+    Optional<Feedback> findByDiary(Diary diary);
 }
