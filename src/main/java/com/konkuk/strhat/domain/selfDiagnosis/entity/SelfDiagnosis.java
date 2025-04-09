@@ -1,6 +1,6 @@
-package com.konkuk.strhat.domain.self_diagnosis.entity;
+package com.konkuk.strhat.domain.selfDiagnosis.entity;
 
-import com.konkuk.strhat.domain.self_diagnosis.enums.SelfDiagnosisType;
+import com.konkuk.strhat.domain.selfDiagnosis.enums.SelfDiagnosisType;
 import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.konkuk.strhat.domain.self_diagnosis.enums;
+package com.konkuk.strhat.domain.selfDiagnosis.enums;
 
 public enum SRIQuestion {
     QUESTION_1("일에 실수가 많다."),
