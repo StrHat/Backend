@@ -1,5 +1,6 @@
 package com.konkuk.strhat.domain.selfDiagnosis.enums;
 
+import com.konkuk.strhat.domain.selfDiagnosis.exception.UnsupportedSelfDiagnosisTypeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,4 +12,12 @@ public enum SelfDiagnosisType {
     PHQ9("Patient Health Questionnaire-9"); // 우울증 선별 도구
 
     private final String description;
+
+    public static SelfDiagnosisType toSelfDiagnosisType(String string) {
+        try {
+            return SelfDiagnosisType.valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new UnsupportedSelfDiagnosisTypeException();
+        }
+    }
 }
