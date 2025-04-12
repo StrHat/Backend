@@ -6,6 +6,7 @@ import com.konkuk.strhat.domain.selfDiagnosis.dto.PostSelfDiagnosisRequest;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisQuestion;
 import com.konkuk.strhat.global.response.ApiResponse;
 import com.konkuk.strhat.global.util.SecurityUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public class SelfDiagnosisController {
     }
 
     @PostMapping("")
-    public ApiResponse<Void> createSelfDiagnosisResult(@RequestBody PostSelfDiagnosisRequest request) {
+    public ApiResponse<Void> createSelfDiagnosisResult(@Valid @RequestBody PostSelfDiagnosisRequest request) {
         selfDiagnosisService.generateSelfDiagnosisResult(request, SecurityUtil.getCurrentUserId());
         return ApiResponse.successOnly();
     }
