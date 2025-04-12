@@ -35,8 +35,11 @@ public enum ErrorCode {
     UNKNOWN_GPT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "A500", "GPT API를 이용하는 로직에서 알 수 없는 이유로 실패하였습니다."),
     GPT_FEEDBACK_GENERATION_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 이용한 피드백 생성에 실패하였습니다."),
     INVALID_FEEDBACK_EMOTION_FORMAT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 피드백 결과 중 감정 키워드 형식이 잘못되었습니다."),
-    GPT_RESPONSE_PARSE_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 얻은 결과를 객체로 변환하는 도중 오류가 발생했습니다.");
+    GPT_RESPONSE_PARSE_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 얻은 결과를 객체로 변환하는 도중 오류가 발생했습니다."),
 
+    // SELF DIAGNOSIS
+    UNSUPPORTED_SELF_DIAGNOSIS_TYPE(HttpStatus.BAD_REQUEST, "S400", "지원하지 않는 설문 형식입니다."),
+    SCORE_OUT_OF_RANGE(HttpStatus.BAD_REQUEST, "S400", "점수가 허용된 범위를 벗어났습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
