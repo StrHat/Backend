@@ -3,7 +3,7 @@ package com.konkuk.strhat.domain.selfDiagnosis.application;
 import com.konkuk.strhat.domain.selfDiagnosis.dao.SelfDiagnosisRepository;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisResultResponse;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.PostSelfDiagnosisRequest;
-import com.konkuk.strhat.domain.selfDiagnosis.dto.SelfDiagnosisQuestion;
+import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisQuestion;
 import com.konkuk.strhat.domain.selfDiagnosis.entity.SelfDiagnosis;
 import com.konkuk.strhat.domain.selfDiagnosis.enums.PHQ9Question;
 import com.konkuk.strhat.domain.selfDiagnosis.enums.PSSQuestion;
@@ -34,7 +34,7 @@ public class SelfDiagnosisService {
     private final UserRepository userRepository;
     private final SelfDiagnosisRepository selfDiagnosisRepository;
 
-    public List<SelfDiagnosisQuestion> findSelfDiagnosis(String type) {
+    public List<GetSelfDiagnosisQuestion> findSelfDiagnosis(String type) {
         if (type.equals("pss")) {
             return pssQuestionList();
         }
@@ -89,25 +89,25 @@ public class SelfDiagnosisService {
         return GetSelfDiagnosisResultResponse.of(user, selfDiagnosis, selfDiagnosisLevel);
     }
 
-    private List<SelfDiagnosisQuestion> pssQuestionList() {
+    private List<GetSelfDiagnosisQuestion> pssQuestionList() {
         return Arrays.stream(PSSQuestion.values())
-                .map(question -> SelfDiagnosisQuestion.of(
+                .map(question -> GetSelfDiagnosisQuestion.of(
                         question.getIndex(),
                         question.getQuestionText()))
                 .collect(Collectors.toList());
     }
 
-    private List<SelfDiagnosisQuestion> sriQuestionList() {
+    private List<GetSelfDiagnosisQuestion> sriQuestionList() {
         return Arrays.stream(SRIQuestion.values())
-                .map(question -> SelfDiagnosisQuestion.of(
+                .map(question -> GetSelfDiagnosisQuestion.of(
                         question.getIndex(),
                         question.getQuestionText()))
                 .collect(Collectors.toList());
     }
 
-    private List<SelfDiagnosisQuestion> phq9QuestionList() {
+    private List<GetSelfDiagnosisQuestion> phq9QuestionList() {
         return Arrays.stream(PHQ9Question.values())
-                .map(question -> SelfDiagnosisQuestion.of(
+                .map(question -> GetSelfDiagnosisQuestion.of(
                         question.getIndex(),
                         question.getQuestionText()))
                 .collect(Collectors.toList());

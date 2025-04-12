@@ -5,12 +5,12 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class SelfDiagnosisQuestion {
+public class GetSelfDiagnosisQuestion {
     private int selfDiagnosisIndex;
     private String selfDiagnosisQuestion;
 
-    public static SelfDiagnosisQuestion of(int selfDiagnosisIndex, String selfDiagnosisQuestion) {
-        return SelfDiagnosisQuestion.builder()
+    public static GetSelfDiagnosisQuestion of(int selfDiagnosisIndex, String selfDiagnosisQuestion) {
+        return GetSelfDiagnosisQuestion.builder()
                 .selfDiagnosisIndex(selfDiagnosisIndex)
                 .selfDiagnosisQuestion(selfDiagnosisQuestion)
                 .build();

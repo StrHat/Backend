@@ -3,7 +3,7 @@ package com.konkuk.strhat.domain.selfDiagnosis.api;
 import com.konkuk.strhat.domain.selfDiagnosis.application.SelfDiagnosisService;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisResultResponse;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.PostSelfDiagnosisRequest;
-import com.konkuk.strhat.domain.selfDiagnosis.dto.SelfDiagnosisQuestion;
+import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisQuestion;
 import com.konkuk.strhat.global.response.ApiResponse;
 import com.konkuk.strhat.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,8 @@ public class SelfDiagnosisController {
     private final SelfDiagnosisService selfDiagnosisService;
 
     @GetMapping("")
-    public ApiResponse<List<SelfDiagnosisQuestion>> readSelfDiagnosis(@RequestParam String type) {
-        List<SelfDiagnosisQuestion> response = selfDiagnosisService.findSelfDiagnosis(type);
+    public ApiResponse<List<GetSelfDiagnosisQuestion>> readSelfDiagnosis(@RequestParam String type) {
+        List<GetSelfDiagnosisQuestion> response = selfDiagnosisService.findSelfDiagnosis(type);
         return ApiResponse.success(response);
     }
 
