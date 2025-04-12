@@ -38,7 +38,8 @@ public enum ErrorCode {
     GPT_RESPONSE_PARSE_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 얻은 결과를 객체로 변환하는 도중 오류가 발생했습니다."),
 
     // SELF DIAGNOSIS
-    UNSUPPORTED_SELF_DIAGNOSIS_TYPE(HttpStatus.BAD_REQUEST, "S400", "지원하지 않는 설문 형식입니다.");
+    UNSUPPORTED_SELF_DIAGNOSIS_TYPE(HttpStatus.BAD_REQUEST, "S400", "지원하지 않는 설문 형식입니다."),
+    SCORE_OUT_OF_RANGE(HttpStatus.BAD_REQUEST, "S400", "점수가 허용된 범위를 벗어났습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
