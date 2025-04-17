@@ -86,7 +86,7 @@ public class DiaryService {
         for (int attempt = 1; attempt <= maxRetries + 1; attempt++) {
             try {
                 return feedbackService.generateFeedbackAndSave(diary);
-            } catch (FeedbackGenerateException e) {
+            } catch (Exception e) {
                 boolean isLastAttempt = (attempt == maxRetries + 1);
                 log.warn("피드백 생성 실패 (시도 {}/{}): {}", attempt, maxRetries + 1, e.getMessage());
 
