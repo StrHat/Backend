@@ -39,7 +39,7 @@ public class JwtProvider {
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-    private static final long ACCESS_TIME = 60 * 60 * 1000L;   // 1시간
+    private static final long ACCESS_TIME = 7 * 24 * 60 * 60 * 1000L;   // 1시간(임시로 7일)
     private static final long REFRESH_TIME = 30 * 24 * 60 * 60 * 1000L;    // 30일
     public static final String ACCESS_TOKEN = "Authorization";
     public static final String GRANT_TYPE = "Bearer ";
