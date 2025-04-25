@@ -36,17 +36,12 @@ public class SelfDiagnosisService {
     private final SelfDiagnosisRepository selfDiagnosisRepository;
 
     public List<GetSelfDiagnosisQuestion> findSelfDiagnosis(String type) {
-        if (type.equals("pss")) {
-            return pssQuestionList();
-        }
-        if (type.equals("sri")) {
-            return sriQuestionList();
-        }
-        if (type.equals("phq-9")) {
-            return phq9QuestionList();
-        }
-
-        throw new UnsupportedSelfDiagnosisTypeException();
+        return switch (type) {
+            case "pss"   -> pssQuestionList();
+            case "sri"   -> sriQuestionList();
+            case "phq-9" -> phq9QuestionList();
+            default      -> throw new UnsupportedSelfDiagnosisTypeException();
+        };
     }
 
     @Transactional
@@ -76,17 +71,12 @@ public class SelfDiagnosisService {
         SelfDiagnosis selfDiagnosis = selfDiagnosisRepository.findBySelfDiagnosisDateAndUser(date, user)
                 .orElseThrow(NotFoundSelfDiagnosisException::new);
 
-        String selfDiagnosisLevel = "";
+        String selfDiagnosisLevel = switch (selfDiagnosis.getType()) {
+            case PSS  -> getStressLevelForPSS(selfDiagnosis.getScore());
+            case SRI  -> getStressLevelForSRI(selfDiagnosis.getScore());
+            case PHQ9 -> getDepressionLevelForPHQ9(selfDiagnosis.getScore());
+        };
 
-        if (selfDiagnosis.getType().equals(SelfDiagnosisType.PSS)) {
-            selfDiagnosisLevel = getStressLevelForPSS(selfDiagnosis.getScore());
-        }
-        if (selfDiagnosis.getType().equals(SelfDiagnosisType.SRI)) {
-            selfDiagnosisLevel = getStressLevelForSRI(selfDiagnosis.getScore());
-        }
-        if (selfDiagnosis.getType().equals(SelfDiagnosisType.PHQ9)) {
-            selfDiagnosisLevel = getDepressionLevelForPHQ9(selfDiagnosis.getScore());
-        }
         return GetSelfDiagnosisResultResponse.of(user, selfDiagnosis, selfDiagnosisLevel);
     }
 
