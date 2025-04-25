@@ -5,6 +5,7 @@ import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisResultResponse
 import com.konkuk.strhat.domain.selfDiagnosis.dto.PostSelfDiagnosisRequest;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisQuestion;
 import com.konkuk.strhat.domain.selfDiagnosis.entity.SelfDiagnosis;
+import com.konkuk.strhat.domain.selfDiagnosis.enums.DepressionLevel;
 import com.konkuk.strhat.domain.selfDiagnosis.enums.PHQ9Question;
 import com.konkuk.strhat.domain.selfDiagnosis.enums.PSSQuestion;
 import com.konkuk.strhat.domain.selfDiagnosis.enums.SRIQuestion;
@@ -139,7 +140,7 @@ public class SelfDiagnosisService {
         if (score >= 81 && score <= 120) {
             return StressLevel.MODERATE.getDescription();
         }
-        if (score >= 120 && score <= 146) {
+        if (score >= 121 && score <= 146) {
             return StressLevel.HIGH.getDescription();
         }
         throw new ScoreOutOfRangeException();
@@ -147,19 +148,19 @@ public class SelfDiagnosisService {
 
     private String getDepressionLevelForPHQ9(int score) {
         if (score >= 0 && score <= 4) {
-            return StressLevel.NORMAL.getDescription();
+            return DepressionLevel.MINIMAL.getDescription();
         }
         if (score >= 5 && score <= 9) {
-            return StressLevel.MILD.getDescription();
+            return DepressionLevel.MILD.getDescription();
         }
         if (score >= 10 && score <= 14) {
-            return StressLevel.MODERATE.getDescription();
+            return DepressionLevel.MODERATE.getDescription();
         }
         if (score >= 15 && score <= 19) {
-            return StressLevel.HIGH.getDescription();
+            return DepressionLevel.ABOVE_MODERATE.getDescription();
         }
         if (score >= 20 && score <= 27) {
-            return StressLevel.HIGH.getDescription();
+            return DepressionLevel.SEVERE.getDescription();
         }
         throw new ScoreOutOfRangeException();
     }
