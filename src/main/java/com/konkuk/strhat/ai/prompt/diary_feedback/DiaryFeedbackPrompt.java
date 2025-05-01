@@ -19,22 +19,23 @@ public class DiaryFeedbackPrompt implements GptPrompt {
     @Override
     public List<GptRequestMessage> toMessages() {
         return List.of(
-                GptRequestMessage.system("당신은 심리학적 지식을 가지고 일기 피드백을 제공하는 심리 전문가입니다."),
+                GptRequestMessage.system("You are a psychological expert providing empathetic and insightful diary feedback based on psychological principles."),
                 GptRequestMessage.user(String.format("""
-                    [요청]
-                    1. 사용자의 정보: %s
-                    2. 사용자의 일기 내용: %s
+                    [Input]
+                    1. User traits: %s
+                    2. Diary entry: %s
                     """, request.getUserTraits(), request.getDiaryContent())),
                 GptRequestMessage.assistant(String.format("""
-                    [응답 프롬프트]
-                    1. 문장은 한국어 및 친근한 존댓말 적는다.
-                    2. 응답은 "%s", "%s", "%s", "%s" 으로 나누어 보낸다.
-                    3. %s: 일기에서 느껴지는 주요 긍정 감정 명사를 3개 선정한다.
-                    4. %s: 일기에서 느껴지는 주요 부정 감정 명사를 3개 선정한다.
-                    5. %s: 사용자에게 공감하는 형식으로 일기를 요약 및 공감한다. 이모지를 1개~2개 포함한다.
-                    6. %s: 사용자의 정보를 반영하여 맞춤형 스트레스 해소 방법을 제안한다.
-
-                    [예시 응답, 형식 참고용]
+                    [Response Instructions]
+                    1. Respond in Korean using polite and friendly language.
+                    2. Structure the response using the following fields: "%s", "%s", "%s", and "%s".
+                    3. %s: Extract and list 3 key positive emotion nouns felt in the diary.
+                    4. %s: Extract and list 3 key negative emotion nouns felt in the diary.
+                    5. %s: Summarize the diary empathetically, reflecting the user's emotions. Include 1–2 emojis.
+                    6. %s: Provide practical, realistic stress-relief suggestions tailored to the specific situation described in the user’s current diary entry, ensuring the advice directly addresses their present concerns.
+                    Use the user’s personality traits, hobbies, and preferred stress-relief methods as context, but do not simply repeat the same advice or limit suggestions to the user’s usual coping methods. Maintain a warm and polite tone, and deliver the suggestions in Korean using 존댓말.
+                    
+                    [Example Response Format]
                     {
                         "%s": ["성취감", "안도감", "즐거움"],
                         "%s": ["불안", "긴장", "피로감"],
