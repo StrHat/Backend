@@ -37,17 +37,9 @@ public class UserService {
             throw new DuplicateEmailException();
         }
 
-        User user = new User(request.getEmail(),
-                request.getNickname(),
-                request.getBirth(),
-                Gender.toGender(request.getGender()),
-                Job.toJob(request.getJob()),
-                request.getHobbyHealingStyle(),
-                request.getHobbyHealingStyle(),
-                request.getPersonality()
-        );
-
+        User user = request.toUserEntity();
         userRepository.save(user);
+
         TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());
         RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getEmail());
         refreshTokenRepository.save(refreshToken);

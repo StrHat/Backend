@@ -1,5 +1,8 @@
 package com.konkuk.strhat.domain.user.dto;
 
+import com.konkuk.strhat.domain.user.entity.User;
+import com.konkuk.strhat.domain.user.enums.Gender;
+import com.konkuk.strhat.domain.user.enums.Job;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -44,4 +47,17 @@ public class PostSignUpRequest {
     @NotBlank
     @Length(min = 20, max = 1000)
     private String personality;
+
+    public User toUserEntity() {
+        return User.builder()
+                .email(this.email)
+                .nickname(this.nickname)
+                .birth(this.birth)
+                .gender(Gender.toGender(this.gender))
+                .job(Job.toJob(this.job))
+                .hobbyHealingStyle(this.hobbyHealingStyle)
+                .stressReliefStyle(this.stressReliefStyle)
+                .personality(this.personality)
+                .build();
+    }
 }
