@@ -3,13 +3,14 @@ package com.konkuk.strhat.domain.diary.dto;
 import com.konkuk.strhat.domain.diary.entity.Diary;
 import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.validation.constraints.*;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiarySaveRequest {
 
     @NotNull

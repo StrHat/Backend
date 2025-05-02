@@ -1,13 +1,18 @@
 package com.konkuk.strhat.domain.diary.dto;
 
 import com.konkuk.strhat.domain.diary.entity.Diary;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Getter
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
 public class DiaryContentResponse {
-    String content;
+    private final String content;
 
     public static DiaryContentResponse from(Diary diary) {
         return DiaryContentResponse.builder()
