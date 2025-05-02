@@ -44,7 +44,7 @@ public class FeedbackService {
 
             // 2. GPT API 요청에 필요한 DTO 구성
             UserInfo userInfo = UserInfo.from(user);
-            DiaryFeedbackRequestDto request = new DiaryFeedbackRequestDto(userInfo, diary.getContent());
+            DiaryFeedbackRequestDto request = DiaryFeedbackRequestDto.of(userInfo, diary.getContent());
 
             // 3. Prompt 생성 및 요청
             DiaryFeedbackPrompt prompt = new DiaryFeedbackPrompt(request);

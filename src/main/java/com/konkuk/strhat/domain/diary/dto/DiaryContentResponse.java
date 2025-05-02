@@ -9,7 +9,7 @@ import lombok.Getter;
 public class DiaryContentResponse {
     String content;
 
-    public static DiaryContentResponse toDiaryContentResponse(Diary diary) {
+    public static DiaryContentResponse from(Diary diary) {
         return DiaryContentResponse.builder()
                 .content(diary.getContent())
                 .build();

@@ -108,7 +108,7 @@ public class DiaryService {
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
                 .orElseThrow(DiaryReadException::new);
 
-        return DiaryContentResponse.toDiaryContentResponse(diary);
+        return DiaryContentResponse.from(diary);
     }
 
     @Transactional(readOnly = true)
