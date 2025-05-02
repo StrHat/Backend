@@ -3,12 +3,17 @@ package com.konkuk.strhat.domain.user.dto;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @Getter
-@Builder
-public class UserInfo {
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
+public class UserInfoDto {
 
     private final String nickname;
     private final Integer birth;
@@ -18,8 +23,8 @@ public class UserInfo {
     private final String stressReliefStyle;
     private final String personality;
 
-    public static UserInfo from(User user) {
-        return UserInfo.builder()
+    public static UserInfoDto from(User user) {
+        return UserInfoDto.builder()
                 .nickname(user.getNickname())
                 .birth(user.getBirth())
                 .gender(user.getGender())

@@ -61,7 +61,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
 
-        return new GetUserInfoResponse(
+        return GetUserInfoResponse.of(
                 user.getNickname(),
                 user.getBirth(),
                 user.getGender().toString(),
