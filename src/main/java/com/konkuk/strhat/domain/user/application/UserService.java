@@ -32,9 +32,8 @@ public class UserService {
 
     @Transactional
     public TokenDto createUser(PostSignUpRequest request, HttpServletResponse httpServletResponse) {
-        Optional<User> duplicateUser = userRepository.findByEmail(request.getEmail());
 
-        if (duplicateUser.isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new DuplicateEmailException();
         }
 
