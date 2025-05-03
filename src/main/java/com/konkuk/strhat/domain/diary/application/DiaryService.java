@@ -80,7 +80,7 @@ public class DiaryService {
                 .orElseThrow(NotFoundUserException::new);
 
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
+                .orElseThrow(NotFoundDiaryException::new);
 
         return DiaryContentResponse.from(diary);
     }
@@ -91,7 +91,7 @@ public class DiaryService {
                 .orElseThrow(NotFoundUserException::new);
 
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
+                .orElseThrow(NotFoundDiaryException::new);
 
         Feedback feedback = feedbackRepository.findByDiary(diary)
                 .orElseThrow(NotFoundFeedbackException::new);

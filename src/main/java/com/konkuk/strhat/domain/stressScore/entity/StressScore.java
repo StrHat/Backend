@@ -1,5 +1,6 @@
-package com.konkuk.strhat.domain.diary.entity;
+package com.konkuk.strhat.domain.stressScore.entity;
 
+import com.konkuk.strhat.domain.diary.entity.Diary;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,12 +41,11 @@ public class StressScore {
     @Builder
     public StressScore(Integer score,
                        String stressFactor,
-                       LocalDate stressScoreDate,
                        Diary diary
     ) {
         this.score = score;
         this.stressFactor = stressFactor;
-        this.stressScoreDate = stressScoreDate;
+        this.stressScoreDate = diary.getDiaryDate();
         this.diary = diary;
     }
 }

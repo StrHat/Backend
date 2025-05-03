@@ -1,4 +1,4 @@
-package com.konkuk.strhat.domain.stressSummary.entity;
+package com.konkuk.strhat.domain.stressScore.entity;
 
 import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
