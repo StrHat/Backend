@@ -1,20 +1,21 @@
 package com.konkuk.strhat.domain.user.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
 public class PostKakaoSignInResponse {
 
-    private boolean userExists;
-    private String email;
+    private final boolean userExists;
+    private final String email;
 
-    @Builder
-    public PostKakaoSignInResponse(boolean userExists, String email) {
-        this.userExists = userExists;
-        this.email = email;
+    public static PostKakaoSignInResponse of(boolean userExists, String email) {
+        return PostKakaoSignInResponse.builder()
+                .userExists(userExists)
+                .email(email)
+                .build();
     }
 }

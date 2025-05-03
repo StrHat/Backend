@@ -38,17 +38,9 @@ public class DiaryService {
         if(diary.isPresent()){
             Integer emotion = diary.get().getEmotion();
             String content = diary.get().getContent();
-            response = CheckDiaryResponse.builder()
-                    .hasDiary(true)
-                    .emotion(emotion)
-                    .summary(content.substring(0, Math.min(content.length(), 70)))
-                    .build();
+            response = CheckDiaryResponse.of(true, emotion, content.substring(0, Math.min(content.length(), 70)));
         } else{
-            response = CheckDiaryResponse.builder()
-                    .hasDiary(false)
-                    .emotion(null)
-                    .summary(null)
-                    .build();
+            response = CheckDiaryResponse.of(false, null, null);
         }
         return response;
     }
@@ -74,12 +66,11 @@ public class DiaryService {
     @Transactional
     public DiarySaveResponse getFeedback(Diary diary) {
         Feedback feedback = tryGenerateFeedbackWithRetry(diary, 2);
-        return DiarySaveResponse.builder()
-                .summary(feedback.getDiarySummary())
-                .positiveKeywords(feedback.getPositiveEmotionArray())
-                .negativeKeywords(feedback.getNegativeEmotionArray())
-                .stressReliefSuggestions(feedback.getStressReliefSuggestion())
-                .build();
+        return DiarySaveResponse.of(
+                feedback.getDiarySummary(),
+                feedback.getPositiveEmotionArray(),
+                feedback.getNegativeEmotionArray(),
+                feedback.getStressReliefSuggestion());
     }
 
 
@@ -91,7 +82,7 @@ public class DiaryService {
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
                 .orElseThrow(DiaryReadException::new);
 
-        return DiaryContentResponse.toDiaryContentResponse(diary);
+        return DiaryContentResponse.from(diary);
     }
 
     @Transactional(readOnly = true)
@@ -105,7 +96,7 @@ public class DiaryService {
         Feedback feedback = feedbackRepository.findByDiary(diary)
                 .orElseThrow(NotFoundFeedbackException::new);
 
-        return FeedbackResponse.of(feedback);
+        return FeedbackResponse.from(feedback);
     }
 
     private Feedback tryGenerateFeedbackWithRetry(Diary diary, int maxRetries) {

@@ -33,9 +33,9 @@ public class KakaoOAuthService {
         if(user.isPresent()){
             TokenDto tokenDto = jwtProvider.createAllToken(user.get().getEmail());
             jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
-            return new PostKakaoSignInResponse(true, email);
+            return PostKakaoSignInResponse.of(true, email);
         }
-        return new PostKakaoSignInResponse(false, email);
+        return PostKakaoSignInResponse.of(false, email);
     }
 
     private Map<String, Object> getUserAttributesByToken(String kakaoToken){

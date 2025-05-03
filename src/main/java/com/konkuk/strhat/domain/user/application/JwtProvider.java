@@ -70,7 +70,7 @@ public class JwtProvider {
         String accessToken = GRANT_TYPE + createAccessToken(email);
         String refreshToken = GRANT_TYPE + createRefreshToken(email);
 
-        return new TokenDto(accessToken, refreshToken);
+        return TokenDto.of(accessToken, refreshToken);
     }
 
     public String createAccessToken(String email) {

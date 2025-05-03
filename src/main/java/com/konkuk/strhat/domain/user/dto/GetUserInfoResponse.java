@@ -1,35 +1,34 @@
 package com.konkuk.strhat.domain.user.dto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = PRIVATE)
 public class GetUserInfoResponse {
-    private String nickname;
-    private Integer birth;
-    private String gender;
-    private String job;
-    private String hobbyHealingStyle;
-    private String stressReliefStyle;
-    private String personality;
+    private final String nickname;
+    private final Integer birth;
+    private final String gender;
+    private final String job;
+    private final String hobbyHealingStyle;
+    private final String stressReliefStyle;
+    private final String personality;
 
-    @Builder
-    public GetUserInfoResponse(String nickname,
-                               Integer birth,
-                               String gender,
-                               String job,
-                               String hobbyHealingStyle,
-                               String stressReliefStyle,
-                               String personality) {
-        this.nickname = nickname;
-        this.birth = birth;
-        this.gender = gender;
-        this.job = job;
-        this.hobbyHealingStyle = hobbyHealingStyle;
-        this.stressReliefStyle = stressReliefStyle;
-        this.personality = personality;
+    public static GetUserInfoResponse of(String nickname, Integer birth, String gender, String job,
+                                         String hobbyHealingStyle, String stressReliefStyle, String personality) {
+        return GetUserInfoResponse.builder()
+                .nickname(nickname)
+                .birth(birth)
+                .gender(gender)
+                .job(job)
+                .hobbyHealingStyle(hobbyHealingStyle)
+                .stressReliefStyle(stressReliefStyle)
+                .personality(personality)
+                .build();
     }
 }
