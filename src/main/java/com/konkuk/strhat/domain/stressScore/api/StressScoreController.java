@@ -1,6 +1,7 @@
 package com.konkuk.strhat.domain.stressScore.api;
 
 import com.konkuk.strhat.domain.stressScore.dto.DailyStressScoreResponse;
+import com.konkuk.strhat.domain.stressScore.dto.WeeklyStressSummaryResponse;
 import com.konkuk.strhat.global.response.ApiResponse;
 import com.konkuk.strhat.global.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 public class StressScoreController {
     private final StressScoreService stressScoreService;
 
-    @GetMapping
+    @GetMapping("/daily")
     public ApiResponse<DailyStressScoreResponse> getDailyStressScore(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         Long userId = SecurityUtil.getCurrentUserId();
@@ -27,4 +28,11 @@ public class StressScoreController {
         return ApiResponse.success(response);
     }
 
+    @GetMapping("/weekly")
+    public ApiResponse<WeeklyStressSummaryResponse> getWeeklyStressSummary(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        Long userId = SecurityUtil.getCurrentUserId();
+        WeeklyStressSummaryResponse response = stressScoreService.getOrCreateWeeklyStressSummary(date, userId);
+        return ApiResponse.success(response);
+    }
 }
