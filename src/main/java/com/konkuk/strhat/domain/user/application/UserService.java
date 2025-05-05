@@ -32,23 +32,14 @@ public class UserService {
 
     @Transactional
     public TokenDto createUser(PostSignUpRequest request, HttpServletResponse httpServletResponse) {
-        Optional<User> duplicateUser = userRepository.findByEmail(request.getEmail());
 
-        if (duplicateUser.isPresent()) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new DuplicateEmailException();
         }
 
-        User user = new User(request.getEmail(),
-                request.getNickname(),
-                request.getBirth(),
-                Gender.toGender(request.getGender()),
-                Job.toJob(request.getJob()),
-                request.getHobbyHealingStyle(),
-                request.getHobbyHealingStyle(),
-                request.getPersonality()
-        );
-
+        User user = request.toUserEntity();
         userRepository.save(user);
+
         TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());
         RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getEmail());
         refreshTokenRepository.save(refreshToken);
@@ -61,7 +52,7 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
 
-        return new GetUserInfoResponse(
+        return GetUserInfoResponse.of(
                 user.getNickname(),
                 user.getBirth(),
                 user.getGender().toString(),

@@ -44,9 +44,10 @@ public class GptClient {
             GptResponse.Output out = response.getOutput().get(0);
             String status = out.getStatus();
             String type = out.getType();
-            String text = out.getContent() != null && !out.getContent().isEmpty()
-                    ? out.getContent().get(0).getText()
-                    : "";
+            String text = "";
+            if (out.getContent() != null && !out.getContent().isEmpty()) {
+                text = out.getContent().get(0).getText();
+            }
             return new GptReplyResult(status, type, text);
         }
 

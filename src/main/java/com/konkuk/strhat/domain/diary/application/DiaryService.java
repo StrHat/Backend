@@ -38,17 +38,9 @@ public class DiaryService {
         if(diary.isPresent()){
             Integer emotion = diary.get().getEmotion();
             String content = diary.get().getContent();
-            response = CheckDiaryResponse.builder()
-                    .hasDiary(true)
-                    .emotion(emotion)
-                    .summary(content.substring(0, Math.min(content.length(), 70)))
-                    .build();
+            response = CheckDiaryResponse.of(true, emotion, content.substring(0, Math.min(content.length(), 70)));
         } else{
-            response = CheckDiaryResponse.builder()
-                    .hasDiary(false)
-                    .emotion(null)
-                    .summary(null)
-                    .build();
+            response = CheckDiaryResponse.of(false, null, null);
         }
         return response;
     }
@@ -74,12 +66,37 @@ public class DiaryService {
     @Transactional
     public DiarySaveResponse getFeedback(Diary diary) {
         Feedback feedback = tryGenerateFeedbackWithRetry(diary, 2);
-        return DiarySaveResponse.builder()
-                .summary(feedback.getDiarySummary())
-                .positiveKeywords(feedback.getPositiveEmotionArray())
-                .negativeKeywords(feedback.getNegativeEmotionArray())
-                .stressReliefSuggestions(feedback.getStressReliefSuggestion())
-                .build();
+        return DiarySaveResponse.of(
+                feedback.getDiarySummary(),
+                feedback.getPositiveEmotionArray(),
+                feedback.getNegativeEmotionArray(),
+                feedback.getStressReliefSuggestion());
+    }
+
+
+    @Transactional(readOnly = true)
+    public DiaryContentResponse readDiary(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        return DiaryContentResponse.from(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public FeedbackResponse readFeedback(Long currentUserId, LocalDate date) {
+        User user = userRepository.findById(currentUserId)
+                .orElseThrow(NotFoundUserException::new);
+
+        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
+                .orElseThrow(DiaryReadException::new);
+
+        Feedback feedback = feedbackRepository.findByDiary(diary)
+                .orElseThrow(NotFoundFeedbackException::new);
+
+        return FeedbackResponse.from(feedback);
     }
 
     private Feedback tryGenerateFeedbackWithRetry(Diary diary, int maxRetries) {
@@ -97,31 +114,5 @@ public class DiaryService {
             }
         }
         throw new UnknownFeedbackGenerateException("피드백 생성 재시도 로직에서 예외가 발생하지 않았으나, 피드백도 생성되지 않았습니다.");
-    }
-
-
-    @Transactional(readOnly = true)
-    public DiaryContentResponse readDiary(Long currentUserId, LocalDate date) {
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(NotFoundUserException::new);
-
-        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
-
-        return DiaryContentResponse.toDiaryContentResponse(diary);
-    }
-
-    @Transactional(readOnly = true)
-    public FeedbackResponse readFeedback(Long currentUserId, LocalDate date) {
-        User user = userRepository.findById(currentUserId)
-                .orElseThrow(NotFoundUserException::new);
-
-        Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
-
-        Feedback feedback = feedbackRepository.findByDiary(diary)
-                .orElseThrow(NotFoundFeedbackException::new);
-
-        return FeedbackResponse.of(feedback);
     }
 }
