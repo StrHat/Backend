@@ -1,5 +1,6 @@
 package com.konkuk.strhat.domain.diary.entity;
 
+import com.konkuk.strhat.domain.stressScore.entity.StressScore;
 import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,11 @@ public class Diary {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stress_score_id")
+    private StressScore stressScore;
 
     @Builder
     public Diary(String content, Integer emotion, LocalDate diaryDate) {

@@ -119,4 +119,10 @@ public class UserService {
         refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
         jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
     }
+
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(NotFoundUserException::new);
+    }
 }

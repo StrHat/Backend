@@ -24,7 +24,9 @@ public class AIFeedbackService {
 
     public Feedback generateFeedback(Diary diary) {
         User user = diary.getUser();
+
         log.info("[AIFeedbackService] 피드백 생성 시작, diaryId={}, userId={}", diary.getId(), user.getId());
+
         try {
             // 1. GPT API 요청에 필요한 DTO 구성
             log.info("[AIFeedbackService] GPT API 요청에 필요한 DTO 구성 시작, diaryId={}, userId={}", diary.getId(), user.getId());
@@ -34,7 +36,7 @@ public class AIFeedbackService {
             // 2. Prompt 생성 및 요청
             log.info("[AIFeedbackService] 프롬프트 생성 시작, diaryId={}, userId={}", diary.getId(), user.getId());
             DiaryFeedbackPrompt prompt = new DiaryFeedbackPrompt(request);
-            log.info("[AIFeedbackService] GPT 요청 시작, diaryId={}, userId={}", diary.getId(), user.getId());;
+            log.info("[AIFeedbackService] GPT 요청 시작, diaryId={}, userId={}", diary.getId(), user.getId());
             GptReplyResult result = gptClient.call(prompt);
 
             // 3. GPT 응답 파싱 및 유효성 검증

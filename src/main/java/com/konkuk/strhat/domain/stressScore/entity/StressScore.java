@@ -10,12 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(
-        name = "stress_score",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"diary_id", "stress_score_date"})
-        }
-)
+@Table(name = "stress_score")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StressScore {
@@ -34,10 +29,6 @@ public class StressScore {
     @Column(name = "stress_score_date", nullable = false)
     private LocalDate stressScoreDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", nullable = false)
-    private Diary diary;
-
     @Builder
     public StressScore(Integer score,
                        String stressFactor,
@@ -46,6 +37,6 @@ public class StressScore {
         this.score = score;
         this.stressFactor = stressFactor;
         this.stressScoreDate = diary.getDiaryDate();
-        this.diary = diary;
+        diary.setStressScore(this);
     }
 }
