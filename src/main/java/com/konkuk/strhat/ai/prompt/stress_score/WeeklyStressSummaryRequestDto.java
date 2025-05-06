@@ -1,4 +1,4 @@
-package com.konkuk.strhat.ai.prompt.diary_feedback;
+package com.konkuk.strhat.ai.prompt.stress_score;
 
 import com.konkuk.strhat.domain.user.dto.UserInfoDto;
 import jakarta.validation.constraints.NotBlank;
@@ -6,20 +6,25 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
-public class DiaryFeedbackRequestDto {
+public class WeeklyStressSummaryRequestDto {
 
     @NotBlank(message = "userTraits는 필수입니다.")
     private final String userTraits;
 
-    @NotBlank(message = "diaryContent는 필수입니다.")
-    private final String diaryContent;
+    @NotBlank(message = "diaryContents는 필수입니다.")
+    private final List<String> diaryContents;
 
-    public static DiaryFeedbackRequestDto of(UserInfoDto userInfoDto, String diaryContent) {
-        return DiaryFeedbackRequestDto.builder()
+    private final String chatLog;
+
+    public static WeeklyStressSummaryRequestDto of(UserInfoDto userInfoDto, List<String> diaryContents) {
+        return WeeklyStressSummaryRequestDto.builder()
                 .userTraits(buildUserTraits(userInfoDto))
-                .diaryContent(diaryContent)
+                .diaryContents(diaryContents)
+                .chatLog("임시")
                 .build();
     }
 
@@ -36,3 +41,4 @@ public class DiaryFeedbackRequestDto {
         );
     }
 }
+

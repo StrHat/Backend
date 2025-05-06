@@ -17,7 +17,7 @@ public class StressSummary {
     @Column(name = "stress_summary_id", updatable = false)
     private Long id;
 
-    @Column(name = "content", length = 255, nullable = false)
+    @Column(name = "content", length = 700, nullable = false)
     private String content;
 
     @Column(name = "week_start_date", nullable = false)

@@ -36,6 +36,10 @@ public enum ErrorCode {
     GPT_FEEDBACK_GENERATION_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 이용한 피드백 생성에 실패하였습니다."),
     INVALID_FEEDBACK_EMOTION_FORMAT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 피드백 결과 중 감정 키워드 형식이 잘못되었습니다."),
     GPT_RESPONSE_PARSE_FAIL(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 얻은 결과를 객체로 변환하는 도중 오류가 발생했습니다."),
+    NO_DIARY_IN_WEEK(HttpStatus.NOT_FOUND, "A404", "해당 주간에 작성된 일기가 없어 요약을 생성할 수 없습니다."),
+    INVALID_SUMMARY_SIZE(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 주간 스트레스 요약 결과의 길이가 유효하지 않습니다."),
+    INVALID_SUMMARY_RESULT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 주간 스트레스 요약 결과가 유효하지 않습니다."),
+    INVALID_STRESS_SCORE_RESULT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 일일 스트레스 점수 측정 결과가 유효하지 않습니다."),
 
     // SELF DIAGNOSIS
     UNSUPPORTED_SELF_DIAGNOSIS_TYPE(HttpStatus.BAD_REQUEST, "S400", "지원하지 않는 설문 형식입니다."),

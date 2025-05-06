@@ -16,7 +16,7 @@ public class DailyStressScorePrompt implements GptPrompt {
     @Override
     public List<GptRequestMessage> toMessages() {
         return List.of(
-                GptRequestMessage.system("You are a mental health assistant trained to assess diary entries."),
+                GptRequestMessage.system("당신은 사용자의 정보를 기반으로 스트레스 원인을 정확히 분석해주는 심리 전문가입니다."),
                 GptRequestMessage.user(String.format("""
                     [Input]
                     1. 사용자 성향 정보: %s
@@ -32,7 +32,7 @@ public class DailyStressScorePrompt implements GptPrompt {
                     [Example Response Format]
                     {
                         "%s": 4,
-                        "%s": "사용자는 다양한 취향을 가진 다양한 활동을 즐기며 삶을 즐기는 편인데, 시험 기간에는 공부 부담과 시간 부족으로 인한 스트레스를 많이 받는 것으로 보입니다. 여러 전공 과목을 동시에 공부해야 하는 상황에서 과연 배워야 할 것들이 끝이 없다는 생각이 불안을 유발하며, 이로 인해 조급함과 지쳐감을 느끼고 있는 모습입니다. 이외에도 자신이 즐기는 음악 청취나 외향적인 성향의 활동을 쉽게 할 수 없다는 점이 스트레스를 느끼는데 영향을 줄 수 있습니다.",
+                        "%s": "사용자는 다양한 취향을 가진 다양한 활동을 즐기며 삶을 즐기는 편인데, 시험 기간에는 공부 부담과 시간 부족으로 인한 스트레스를 많이 받는 것으로 보입니다. 여러 전공 과목을 동시에 공부해야 하는 상황에서 과연 배워야 할 것들이 끝이 없다는 생각이 불안을 유발하며, 이로 인해 조급함과 지쳐감을 느끼고 있는 모습입니다. 이외에도 자신이 즐기는 음악 청취나 외향적인 성향의 활동을 쉽게 할 수 없다는 점이 스트레스를 느끼는데 영향을 줄 수 있습니다."
                     }
                     """,
                         SCORE, FACTOR,

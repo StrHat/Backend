@@ -1,9 +1,7 @@
 package com.konkuk.strhat.domain.stressScore.application;
 
 import com.konkuk.strhat.ai.dto.GptReplyResult;
-import com.konkuk.strhat.ai.prompt.stress_score.DailyStressScorePrompt;
-import com.konkuk.strhat.ai.prompt.stress_score.DailyStressScoreRequestDto;
-import com.konkuk.strhat.ai.prompt.stress_score.DailyStressScoreResponseDto;
+import com.konkuk.strhat.ai.prompt.stress_score.*;
 import com.konkuk.strhat.ai.util.GptResponseParser;
 import com.konkuk.strhat.ai.web_client.GptClient;
 import com.konkuk.strhat.domain.diary.dao.DiaryRepository;
@@ -16,6 +14,8 @@ import com.konkuk.strhat.domain.stressScore.dto.WeeklyStressSummaryResponse;
 import com.konkuk.strhat.domain.stressScore.entity.StressScore;
 import com.konkuk.strhat.domain.stressScore.entity.StressSummary;
 import com.konkuk.strhat.domain.stressScore.exception.DuplicateStressScoreException;
+import com.konkuk.strhat.domain.stressScore.exception.DuplicateStressSummaryException;
+import com.konkuk.strhat.domain.stressScore.exception.NoDiaryInWeekException;
 import com.konkuk.strhat.domain.user.dao.UserRepository;
 import com.konkuk.strhat.domain.user.dto.UserInfoDto;
 import com.konkuk.strhat.domain.user.entity.User;
@@ -56,20 +56,25 @@ public class StressScoreService {
 
     @Transactional
     public WeeklyStressSummaryResponse getOrCreateWeeklyStressSummary(LocalDate date, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(NotFoundUserException::new);
-
         LocalDate weekStart = DateUtils.getStartOfWeek(date);
         LocalDate weekEnd = DateUtils.getEndOfWeek(date);
 
-        // 1. 일주일치 일기 + 스트레스 점수를 한 번에 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(NotFoundUserException::new);
+
+        // 1. 일주일치 일기 조회
         List<Diary> diaries = diaryRepository.findAllByUserAndDiaryDateBetweenOrderByDiaryDateAsc(user, weekStart, weekEnd);
+        if (diaries.isEmpty()) {
+            throw new NoDiaryInWeekException(weekStart, weekEnd);
+        }
+
+        // 2. 일주일치 스트레스 점수 조회
         Map<Long, StressScore> stressScoreMap = stressScoreRepository.findAllByDiaryIn(diaries).stream()
                 .collect(Collectors.toMap(s -> s.getDiary().getId(), Function.identity()));
 
+        // 3. 감정 점수, 스트레스 점수 조회
         Integer[] stressLevels = new Integer[7];
         Integer[] emotionLevels = new Integer[7];
-
         for (Diary diary : diaries) {
             int index = diary.getDiaryDate().getDayOfWeek().getValue() - 1;
             emotionLevels[index] = diary.getEmotion();
@@ -79,7 +84,7 @@ public class StressScoreService {
             }
         }
 
-        // 2. 요약 조회 or 생성
+        // 4. 요약 조회 or 생성
         StressSummary summary = stressSummaryRepository
                 .findByUserAndWeekStartDate(user, weekStart)
                 .orElseGet(() -> generateWeeklyStressSummary(user, diaries, weekStart, weekEnd));
@@ -116,7 +121,10 @@ public class StressScoreService {
         GptReplyResult result = gptClient.chat(prompt);
         DailyStressScoreResponseDto dailyStressScoreResponseDto = gptResponseParser.parse(result, DailyStressScoreResponseDto.class);
 
-        // 4. StressScore 객체 생성 및 저장
+        // 4. 응답 유효성 검증
+        dailyStressScoreResponseDto.validateResult();
+
+        // 5. StressScore 객체 생성 및 저장
         StressScore stressScore = StressScore.builder()
                 .score(dailyStressScoreResponseDto.getStressScore())
                 .stressFactor(dailyStressScoreResponseDto.getStressFactor())
@@ -127,17 +135,35 @@ public class StressScoreService {
 
 
     private StressSummary generateWeeklyStressSummary(User user, List<Diary> diaries, LocalDate weekStart, LocalDate weekEnd) {
-        // TODO 채팅 내역도 반영 로직 추가 필요
+        if (stressSummaryRepository.existsByUserAndWeekStartDate(user, weekStart)) {
+            throw new DuplicateStressSummaryException();
+        }
 
-        // TODO AI 사용하는 로직으로 수정 필요
-        StressSummary summary = StressSummary.builder()
-                .content("스트레스 요약이 자동 생성되었습니다. 스트레스 완화에 힘써주세요.")
+        // 1. GPT API 요청에 필요한 DTO 구성
+        WeeklyStressSummaryRequestDto requestDto = WeeklyStressSummaryRequestDto.of(
+                UserInfoDto.from(user),
+                diaries.stream()
+                        .map(diary -> String.format("[작성 날짜: %s] %s", diary.getDiaryDate(), diary.getContent()))
+                        .toList()
+        );
+
+        // 3. Prompt 생성 및 요청
+        // TODO 채팅 내역 반영 로직 추가 필요
+        WeeklyStressSummaryPrompt prompt = new WeeklyStressSummaryPrompt(requestDto);
+        GptReplyResult result = gptClient.chat(prompt);
+        WeeklyStressSummaryResponseDto weeklyStressSummaryResponseDto = gptResponseParser.parse(result, WeeklyStressSummaryResponseDto.class);
+
+        // 4. 응답 유효성 검증
+        weeklyStressSummaryResponseDto.validateResult();
+
+        // 5. StressSummary 객체 생성 및 저장
+        StressSummary stressSummary = StressSummary.builder()
+                .content(weeklyStressSummaryResponseDto.getWeeklyStressFactorSummary())
                 .weekStartDate(weekStart)
                 .weekEndDate(weekEnd)
                 .build();
-        user.addStressSummary(summary);
-
-        return stressSummaryRepository.save(summary);
+        user.addStressSummary(stressSummary);
+        return stressSummaryRepository.save(stressSummary);
     }
 
 }

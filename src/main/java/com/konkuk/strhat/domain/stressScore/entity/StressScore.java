@@ -28,7 +28,7 @@ public class StressScore {
     @Column(name = "score", nullable = false)
     private Integer score;
 
-    @Column(name = "stress_factor", length = 255, nullable = false)
+    @Column(name = "stress_factor", length = 500, nullable = false)
     private String stressFactor;
 
     @Column(name = "stress_score_date", nullable = false)
