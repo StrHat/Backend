@@ -118,7 +118,7 @@ public class StressScoreService {
         // 3. Prompt 생성 및 요청
         // TODO 채팅 내역 반영 로직 추가 필요
         DailyStressScorePrompt prompt = new DailyStressScorePrompt(requestDto);
-        GptReplyResult result = gptClient.chat(prompt);
+        GptReplyResult result = gptClient.call(prompt);
         DailyStressScoreResponseDto dailyStressScoreResponseDto = gptResponseParser.parse(result, DailyStressScoreResponseDto.class);
 
         // 4. 응답 유효성 검증
@@ -132,7 +132,6 @@ public class StressScoreService {
                 .build();
         return stressScoreRepository.save(stressScore);
     }
-
 
     private StressSummary generateWeeklyStressSummary(User user, List<Diary> diaries, LocalDate weekStart, LocalDate weekEnd) {
         if (stressSummaryRepository.existsByUserAndWeekStartDate(user, weekStart)) {
@@ -150,7 +149,7 @@ public class StressScoreService {
         // 3. Prompt 생성 및 요청
         // TODO 채팅 내역 반영 로직 추가 필요
         WeeklyStressSummaryPrompt prompt = new WeeklyStressSummaryPrompt(requestDto);
-        GptReplyResult result = gptClient.chat(prompt);
+        GptReplyResult result = gptClient.call(prompt);
         WeeklyStressSummaryResponseDto weeklyStressSummaryResponseDto = gptResponseParser.parse(result, WeeklyStressSummaryResponseDto.class);
 
         // 4. 응답 유효성 검증

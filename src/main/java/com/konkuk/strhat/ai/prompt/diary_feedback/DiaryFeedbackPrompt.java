@@ -29,8 +29,8 @@ public class DiaryFeedbackPrompt implements GptPrompt {
                     [Response Instructions]
                     1. Respond in Korean using polite and friendly language.
                     2. Structure the response using the following fields: "%s", "%s", "%s", and "%s".
-                    3. %s: Extract and list 3 key positive emotion nouns felt in the diary.
-                    4. %s: Extract and list 3 key negative emotion nouns felt in the diary. (전혀 없다면 "없음"이라도 포함해서 포맷을 만족해야 한다.)
+                    3. %s: Extract and list 3 key positive emotion nouns felt in the diary. (없다면 각 엔트리에 "없음"이라도 포함해서 3개의 문자열을 담은 배열 포맷을 만족해야 한다.)
+                    4. %s: Extract and list 3 key negative emotion nouns felt in the diary. (없다면 각 엔트리에 "없음"이라도 포함해서 3개의 문자열을 담은 배열 포맷을 만족해야 한다.)
                     5. %s: Summarize the diary empathetically, reflecting the user's emotions. Include 1–2 emojis.
                     6. %s: Provide practical, realistic stress-relief suggestions tailored to the specific situation described in the user’s current diary entry, ensuring the advice directly addresses their present concerns.
                     Use the user’s personality traits, hobbies, and preferred stress-relief methods as context, but do not simply repeat the same advice or limit suggestions to the user’s usual coping methods. Maintain a warm and polite tone, and deliver the suggestions in Korean using 존댓말.
