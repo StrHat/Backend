@@ -45,7 +45,10 @@ public class FeedbackService {
             GptReplyResult result = gptClient.chat(prompt);
             DiaryFeedbackResponseDto diaryFeedbackResponseDto = gptResponseParser.parse(result, DiaryFeedbackResponseDto.class);
 
-            // 4. 피드백 객체 생성
+            // 4. 응답 유효성 검증
+            diaryFeedbackResponseDto.validateResult();
+
+            // 5. 피드백 객체 생성 및 저장
             String positiveEmotionKeywords = diaryFeedbackResponseDto.getPositiveEmotionKeywords().toString();
             String negativeEmotionKeywords = diaryFeedbackResponseDto.getNegativeEmotionKeywords().toString();
             feedback = Feedback.builder()
@@ -55,20 +58,9 @@ public class FeedbackService {
                     .stressReliefSuggestion(diaryFeedbackResponseDto.getStressReliefSuggestions())
                     .diary(diary)
                     .build();
+            feedback = feedbackRepository.save(feedback);
         } catch (Exception e) {
             throw new FeedbackGenerateException(e.getMessage());
-        }
-
-        // 감정 키워드 개수 검증
-        if (feedback.getPositiveEmotionArray().length != 3 || feedback.getNegativeEmotionArray().length != 3) {
-            throw new InvalidFeedbackEmotionFormatException(feedback.getPositiveEmotions(), feedback.getNegativeEmotions());
-        }
-
-        // AI 피드백 데이터 저장
-        try {
-            feedbackRepository.save(feedback);
-        } catch (Exception e) {
-            throw new FeedbackSaveException();
         }
 
         return feedback;
