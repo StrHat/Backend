@@ -1,5 +1,6 @@
-package com.konkuk.strhat.domain.diary.entity;
+package com.konkuk.strhat.domain.stressScore.entity;
 
+import com.konkuk.strhat.domain.diary.entity.Diary;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,12 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(
-        name = "stress_score",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"diary_id", "stress_score_date"})
-        }
-)
+@Table(name = "stress_score")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StressScore {
@@ -27,25 +23,20 @@ public class StressScore {
     @Column(name = "score", nullable = false)
     private Integer score;
 
-    @Column(name = "stress_factor", length = 255, nullable = false)
+    @Column(name = "stress_factor", length = 500, nullable = false)
     private String stressFactor;
 
     @Column(name = "stress_score_date", nullable = false)
     private LocalDate stressScoreDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", nullable = false)
-    private Diary diary;
-
     @Builder
     public StressScore(Integer score,
                        String stressFactor,
-                       LocalDate stressScoreDate,
                        Diary diary
     ) {
         this.score = score;
         this.stressFactor = stressFactor;
-        this.stressScoreDate = stressScoreDate;
-        this.diary = diary;
+        this.stressScoreDate = diary.getDiaryDate();
+        diary.setStressScore(this);
     }
 }

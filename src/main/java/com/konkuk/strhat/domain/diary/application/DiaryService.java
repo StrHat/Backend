@@ -24,11 +24,10 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final FeedbackRepository feedbackRepository;
-    private final FeedbackService feedbackService;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public CheckDiaryResponse checkDiaryExist(Long currentUserId, LocalDate date){
+    public CheckDiaryResponse checkDiaryExists(Long currentUserId, LocalDate date){
         User user = userRepository.findById(currentUserId)
                 .orElseThrow(NotFoundUserException::new);
 
@@ -64,8 +63,8 @@ public class DiaryService {
     }
 
     @Transactional
-    public DiarySaveResponse getFeedback(Diary diary) {
-        Feedback feedback = tryGenerateFeedbackWithRetry(diary, 2);
+    public DiarySaveResponse saveFeedback(Feedback feedback) {
+        feedbackRepository.save(feedback);
         return DiarySaveResponse.of(
                 feedback.getDiarySummary(),
                 feedback.getPositiveEmotionArray(),
@@ -73,14 +72,13 @@ public class DiaryService {
                 feedback.getStressReliefSuggestion());
     }
 
-
     @Transactional(readOnly = true)
     public DiaryContentResponse readDiary(Long currentUserId, LocalDate date) {
         User user = userRepository.findById(currentUserId)
                 .orElseThrow(NotFoundUserException::new);
 
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
+                .orElseThrow(NotFoundDiaryException::new);
 
         return DiaryContentResponse.from(diary);
     }
@@ -91,28 +89,11 @@ public class DiaryService {
                 .orElseThrow(NotFoundUserException::new);
 
         Diary diary = diaryRepository.findByDiaryDateAndUser(date, user)
-                .orElseThrow(DiaryReadException::new);
+                .orElseThrow(NotFoundDiaryException::new);
 
         Feedback feedback = feedbackRepository.findByDiary(diary)
                 .orElseThrow(NotFoundFeedbackException::new);
 
         return FeedbackResponse.from(feedback);
-    }
-
-    private Feedback tryGenerateFeedbackWithRetry(Diary diary, int maxRetries) {
-        for (int attempt = 1; attempt <= maxRetries + 1; attempt++) {
-            try {
-                return feedbackService.generateFeedbackAndSave(diary);
-            } catch (Exception e) {
-                boolean isLastAttempt = (attempt == maxRetries + 1);
-                log.warn("피드백 생성 실패 (시도 {}/{}): {}", attempt, maxRetries + 1, e.getMessage());
-
-                if (isLastAttempt) {
-                    log.error("피드백 생성 최종 실패: 총 {}회 시도했으나 모두 실패했습니다.", maxRetries + 1, e);
-                    throw new UnknownFeedbackGenerateException("AI 피드백 생성에 총 " + (maxRetries + 1) + "회 시도했으나 모두 실패했습니다. " + e.getMessage());
-                }
-            }
-        }
-        throw new UnknownFeedbackGenerateException("피드백 생성 재시도 로직에서 예외가 발생하지 않았으나, 피드백도 생성되지 않았습니다.");
     }
 }

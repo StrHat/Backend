@@ -24,7 +24,7 @@ public class Feedback {
     @Column(name = "feedback_id", updatable = false)
     private Long id;
 
-    @Column(name = "diary_summary",length = 255, nullable = false)
+    @Column(name = "diary_summary",length = 500, nullable = false)
     private String diarySummary;
 
     @Column(name = "positive_emotions",length = 255, nullable = false)
@@ -33,7 +33,7 @@ public class Feedback {
     @Column(name = "negative_emotions",length = 255, nullable = false)
     private String negativeEmotions;
 
-    @Column(name = "stress_relief_suggestion",length = 255, nullable = false)
+    @Column(name = "stress_relief_suggestion",length = 500, nullable = false)
     private String stressReliefSuggestion;
 
     @Column(name = "feedback_date", nullable = false)
