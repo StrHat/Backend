@@ -1,4 +1,4 @@
-package com.konkuk.strhat.domain.stressSummary.entity;
+package com.konkuk.strhat.domain.stressScore.entity;
 
 import com.konkuk.strhat.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ public class StressSummary {
     @Column(name = "stress_summary_id", updatable = false)
     private Long id;
 
-    @Column(name = "content", length = 255, nullable = false)
+    @Column(name = "content", length = 700, nullable = false)
     private String content;
 
     @Column(name = "week_start_date", nullable = false)

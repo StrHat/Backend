@@ -1,11 +1,11 @@
 package com.konkuk.strhat.domain.user.entity;
 
 import com.konkuk.strhat.domain.diary.entity.Diary;
+import com.konkuk.strhat.domain.stressScore.entity.StressSummary;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
 import com.konkuk.strhat.domain.selfDiagnosis.entity.SelfDiagnosis;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
-import com.konkuk.strhat.domain.stressSummary.entity.StressSummary;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.ArrayList;

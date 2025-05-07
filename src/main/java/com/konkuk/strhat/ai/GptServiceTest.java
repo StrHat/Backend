@@ -15,7 +15,7 @@ public class GptServiceTest {
     private final GptResponseParser gptResponseParser;
 
     public <T> T requestAndParse(GptPrompt prompt, Class<T> valueType) {
-        GptReplyResult result = gptClient.chat(prompt);
+        GptReplyResult result = gptClient.call(prompt);
         return gptResponseParser.parse(result, valueType);
     }
 }
