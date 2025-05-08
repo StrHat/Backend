@@ -13,12 +13,14 @@ public class CheckDiaryResponse {
     private final boolean hasDiary;
     private final Integer emotion;
     private final String summary;
+    private final Long diaryId;
 
-    public static CheckDiaryResponse of(boolean hasDiary, Integer emotion, String summary){
+    public static CheckDiaryResponse of(boolean hasDiary, Integer emotion, String summary, Long diaryId){
         return CheckDiaryResponse.builder()
                 .hasDiary(hasDiary)
                 .emotion(emotion)
                 .summary(summary)
+                .diaryId(diaryId)
                 .build();
     }
 }

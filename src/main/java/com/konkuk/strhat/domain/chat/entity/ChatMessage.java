@@ -1,5 +1,6 @@
 package com.konkuk.strhat.domain.chat.entity;
 
+import com.konkuk.strhat.domain.chat.enums.ChatMode;
 import com.konkuk.strhat.domain.chat.enums.Sender;
 import com.konkuk.strhat.domain.diary.entity.Diary;
 import com.konkuk.strhat.global.entity.BaseCreatedEntity;
@@ -37,14 +38,19 @@ public class ChatMessage extends BaseCreatedEntity {
     @Column(name = "sender", length = 255, nullable = false)
     private Sender sender;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "chat_mode", length = 20, nullable = false)
+    private ChatMode chatMode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id", nullable = false)
     private Diary diary;
 
     @Builder
-    public ChatMessage(String content, Sender sender, Diary diary) {
+    public ChatMessage(String content, Sender sender, Diary diary, ChatMode chatMode) {
         this.content = content;
         this.sender = sender;
         this.diary = diary;
+        this.chatMode = chatMode;
     }
 }

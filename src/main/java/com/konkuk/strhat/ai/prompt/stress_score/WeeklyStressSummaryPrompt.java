@@ -20,8 +20,8 @@ public class WeeklyStressSummaryPrompt implements GptPrompt {
                 GptRequestMessage.user(String.format("""
                     [Input]
                     1. 사용자 성향 정보: %s
-                    1. 오늘의 일기 내용: %s
-                    2. 오늘의 대화 내역: %s
+                    2. 오늘의 일기 내용: %s
+                    3. 오늘의 대화 내역: %s
                     """, request.getUserTraits(), request.getDiaryContents(), request.getChatLog())),
                 GptRequestMessage.assistant(String.format("""
                     [Response Instructions]
