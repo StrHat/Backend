@@ -16,6 +16,7 @@ public class FeedbackResponse {
     private final String[] positiveKeywords;
     private final String[] negativeKeywords;
     private final String stressReliefSuggestions;
+    private final Long diaryId;
 
     public static FeedbackResponse from(Feedback feedback){
         return FeedbackResponse.builder()
@@ -23,6 +24,7 @@ public class FeedbackResponse {
                 .positiveKeywords(feedback.getPositiveEmotionArray())
                 .negativeKeywords(feedback.getNegativeEmotionArray())
                 .stressReliefSuggestions(feedback.getStressReliefSuggestion())
+                .diaryId(feedback.getDiary().getId())
                 .build();
     }
 }
