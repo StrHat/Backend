@@ -15,13 +15,15 @@ public class DiarySaveResponse {
     private final String[] positiveKeywords;
     private final String[] negativeKeywords;
     private final String stressReliefSuggestions;
+    private final Long diaryId;
 
-    public static DiarySaveResponse of(String summary, String[] positiveKeywords, String[] negativeKeywords, String stressReliefSuggestions){
+    public static DiarySaveResponse of(String summary, String[] positiveKeywords, String[] negativeKeywords, String stressReliefSuggestions, Long diaryId){
         return DiarySaveResponse.builder()
                 .summary(summary)
                 .positiveKeywords(positiveKeywords)
                 .negativeKeywords(negativeKeywords)
                 .stressReliefSuggestions(stressReliefSuggestions)
+                .diaryId(diaryId)
                 .build();
     }
 }

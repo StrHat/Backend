@@ -41,6 +41,7 @@ public enum ErrorCode {
     INVALID_SUMMARY_SIZE(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 주간 스트레스 요약 결과의 길이가 유효하지 않습니다."),
     INVALID_SUMMARY_RESULT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 주간 스트레스 요약 결과가 유효하지 않습니다."),
     INVALID_STRESS_SCORE_RESULT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 일일 스트레스 점수 측정 결과가 유효하지 않습니다."),
+    INVALID_CHAT_RESULT(HttpStatus.BAD_GATEWAY, "A502", "GPT API를 통해 생성된 채팅 결과가 유효하지 않습니다."),
 
     // SELF DIAGNOSIS
     UNSUPPORTED_SELF_DIAGNOSIS_TYPE(HttpStatus.BAD_REQUEST, "S400", "지원하지 않는 설문 형식입니다."),

@@ -37,9 +37,10 @@ public class DiaryService {
         if(diary.isPresent()){
             Integer emotion = diary.get().getEmotion();
             String content = diary.get().getContent();
-            response = CheckDiaryResponse.of(true, emotion, content.substring(0, Math.min(content.length(), 70)));
+            Long diaryId = diary.get().getId();
+            response = CheckDiaryResponse.of(true, emotion, content.substring(0, Math.min(content.length(), 70)), diaryId);
         } else{
-            response = CheckDiaryResponse.of(false, null, null);
+            response = CheckDiaryResponse.of(false, null, null, null);
         }
         return response;
     }
@@ -69,7 +70,9 @@ public class DiaryService {
                 feedback.getDiarySummary(),
                 feedback.getPositiveEmotionArray(),
                 feedback.getNegativeEmotionArray(),
-                feedback.getStressReliefSuggestion());
+                feedback.getStressReliefSuggestion(),
+                feedback.getDiary().getId()
+        );
     }
 
     @Transactional(readOnly = true)

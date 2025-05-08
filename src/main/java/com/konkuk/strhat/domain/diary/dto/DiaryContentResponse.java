@@ -13,10 +13,12 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class DiaryContentResponse {
     private final String content;
+    private final Long diaryId;
 
     public static DiaryContentResponse from(Diary diary) {
         return DiaryContentResponse.builder()
                 .content(diary.getContent())
+                .diaryId(diary.getId())
                 .build();
     }
 }
