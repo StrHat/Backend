@@ -114,7 +114,7 @@ public class SelfDiagnosisService {
         if (score >= 17 && score <= 18) {
             return StressLevel.MODERATE.getDescription();
         }
-        if (score >= 19 && score <= 36) {
+        if (score >= 19 && score <= 40) {
             return StressLevel.HIGH.getDescription();
         }
         throw new ScoreOutOfRangeException();
@@ -127,10 +127,10 @@ public class SelfDiagnosisService {
         if (score >= 51 && score <= 80) {
             return StressLevel.MILD.getDescription();
         }
-        if (score >= 81 && score <= 120) {
+        if (score >= 81 && score <= 119) {
             return StressLevel.MODERATE.getDescription();
         }
-        if (score >= 121 && score <= 146) {
+        if (score >= 120 && score <= 195) {
             return StressLevel.HIGH.getDescription();
         }
         throw new ScoreOutOfRangeException();
