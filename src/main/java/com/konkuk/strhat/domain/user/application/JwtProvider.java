@@ -66,16 +66,16 @@ public class JwtProvider {
         return token;
     }
 
-    public TokenDto createAllToken(String email) {
-        String accessToken = GRANT_TYPE + createAccessToken(email);
-        String refreshToken = GRANT_TYPE + createRefreshToken(email);
+    public TokenDto createAllToken(Long kakaoId) {
+        String accessToken = GRANT_TYPE + createAccessToken(kakaoId);
+        String refreshToken = GRANT_TYPE + createRefreshToken(kakaoId);
 
         return TokenDto.of(accessToken, refreshToken);
     }
 
-    public String createAccessToken(String email) {
+    public String createAccessToken(Long kakaoId) {
         Claims claims = Jwts.claims();
-        claims.put("email", email);
+        claims.put("kakaoId", kakaoId);
         Date date = new Date();
 
         return Jwts.builder()
@@ -86,9 +86,9 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String email) {
+    public String createRefreshToken(Long kakaoId) {
         Claims claims = Jwts.claims();
-        claims.put("email", email);
+        claims.put("kakaoId", kakaoId);
         Date date = new Date();
 
         return Jwts.builder()
@@ -116,19 +116,19 @@ public class JwtProvider {
         }
     }
 
-    public String getEmailByToken(String token) {
+    public Long getKakaoIdByToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("email", String.class);
+                .get("kakaoId", Long.class);
     }
 
     public RefreshToken validateRefreshToken(String refreshToken) {
         validateToken(refreshToken);
-        String email = getEmailByToken(refreshToken);
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
+        Long kakaoId = getKakaoIdByToken(refreshToken);
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByKakaoId(kakaoId);
         if (optionalRefreshToken.isEmpty()) {
             throw new NotFoundRefreshTokenException();
         }
@@ -144,8 +144,8 @@ public class JwtProvider {
                 .getExpiration();
     }
 
-    public Authentication createAuthentication(String email) {
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+    public Authentication createAuthentication(String kakaoId) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(kakaoId);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

@@ -10,12 +10,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class PostKakaoSignInResponse {
 
     private final boolean userExists;
-    private final String email;
+    private final Long kakaoId;
 
-    public static PostKakaoSignInResponse of(boolean userExists, String email) {
+    public static PostKakaoSignInResponse of(boolean userExists, Long kakaoId) {
         return PostKakaoSignInResponse.builder()
                 .userExists(userExists)
-                .email(email)
+                .kakaoId(kakaoId)
                 .build();
     }
 }

@@ -14,7 +14,7 @@ import com.konkuk.strhat.domain.user.entity.RefreshToken;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
-import com.konkuk.strhat.domain.user.exception.DuplicateEmailException;
+import com.konkuk.strhat.domain.user.exception.DuplicateKakaoIdException;
 import com.konkuk.strhat.domain.user.exception.NotFoundUserException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -33,15 +33,15 @@ public class UserService {
     @Transactional
     public TokenDto createUser(PostSignUpRequest request, HttpServletResponse httpServletResponse) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new DuplicateEmailException();
+        if (userRepository.existsByKakaoId(request.getKakaoId())) {
+            throw new DuplicateKakaoIdException();
         }
 
         User user = request.toUserEntity();
         userRepository.save(user);
 
-        TokenDto tokenDto = jwtProvider.createAllToken(request.getEmail());
-        RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getEmail());
+        TokenDto tokenDto = jwtProvider.createAllToken(request.getKakaoId());
+        RefreshToken refreshToken = new RefreshToken(tokenDto.getRefreshToken(), request.getKakaoId());
         refreshTokenRepository.save(refreshToken);
         jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
         return tokenDto;
@@ -64,8 +64,8 @@ public class UserService {
     }
 
     @Transactional
-    public void processSignOut(String email) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findRefreshTokenByEmail(email);
+    public void processSignOut(Long kakaoId) {
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKakaoId(kakaoId);
         refreshToken.ifPresent(refreshTokenRepository::deleteAll);
     }
 
@@ -115,7 +115,7 @@ public class UserService {
         }
 
         RefreshToken refreshToken = jwtProvider.validateRefreshToken(requestToken);
-        TokenDto tokenDto = jwtProvider.createAllToken(refreshToken.getEmail());
+        TokenDto tokenDto = jwtProvider.createAllToken(refreshToken.getKakaoId());
         refreshToken.updateRefreshToken(tokenDto.getRefreshToken());
         jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
     }

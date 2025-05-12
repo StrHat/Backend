@@ -17,10 +17,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+    public UserDetails loadUserByUsername(String kakaoId) throws UsernameNotFoundException {
+        User user = userRepository.findByKakaoId(Long.valueOf(kakaoId))
                 .orElseThrow(NotFoundUserException::new);
 
-        return new CustomUserDetails(user.getId(), user.getEmail(), user.getNickname());
+        return new CustomUserDetails(user.getId(), user.getKakaoId(), user.getNickname());
     }
 }
