@@ -55,8 +55,8 @@ public class UserService {
         return GetUserInfoResponse.of(
                 user.getNickname(),
                 user.getBirth(),
-                user.getGender().toString(),
-                user.getJob().toString(),
+                user.getGender().getDescription(),
+                user.getJob().getDescription(),
                 user.getHobbyHealingStyle(),
                 user.getStressReliefStyle(),
                 user.getPersonality()
@@ -77,8 +77,8 @@ public class UserService {
         user.updateBasicInfo(
                 request.getNickname(),
                 request.getBirth(),
-                Gender.toGender(request.getGender()),
-                Job.toJob(request.getJob())
+                Gender.from(request.getGender()),
+                Job.from(request.getJob())
         );
     }
 
