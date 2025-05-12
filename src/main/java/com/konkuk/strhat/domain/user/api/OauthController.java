@@ -23,7 +23,7 @@ public class OauthController {
     @Operation(summary = "카카오 검증 및 로그인", description = "카카오 계정 유무를 검증하고 로그인한다.")
     @PostMapping("/kakao")
     public ApiResponse<PostKakaoSignInResponse> kakaoSignIn(@Valid @RequestBody PostKakaoSignInRequest request, HttpServletResponse httpServletResponse) {
-        PostKakaoSignInResponse response = kakaoOAuthService.getUserProfileByToken(request, httpServletResponse);
+        PostKakaoSignInResponse response = kakaoOAuthService.getUserIdByToken(request, httpServletResponse);
         return ApiResponse.success(response);
     }
 }

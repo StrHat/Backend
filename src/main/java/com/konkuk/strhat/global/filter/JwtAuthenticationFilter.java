@@ -21,13 +21,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = jwtProvider.getHeaderToken(request);
 
         if(accessToken != null && jwtProvider.validateToken(accessToken)) {
-            setAuthentication(jwtProvider.getEmailByToken(accessToken));
+            setAuthentication(jwtProvider.getKakaoIdByToken(accessToken).toString());
         }
         filterChain.doFilter(request, response);
     }
 
-    public void setAuthentication(String email) {
-        Authentication authentication = jwtProvider.createAuthentication(email);
+    public void setAuthentication(String nickname) {
+        Authentication authentication = jwtProvider.createAuthentication(nickname);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

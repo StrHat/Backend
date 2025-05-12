@@ -39,7 +39,7 @@ public class UserController {
     @Operation(summary = "로그아웃" ,description = "로그아웃한다.")
     @PostMapping("/sign-out")
     public ApiResponse<Void> signOut() {
-        userService.processSignOut(SecurityUtil.getCurrentUserEmail());
+        userService.processSignOut(SecurityUtil.getCurrentUserKakaoId());
         return ApiResponse.successOnly();
     }
 

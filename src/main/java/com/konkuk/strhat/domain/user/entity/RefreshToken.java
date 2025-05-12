@@ -19,12 +19,12 @@ public class RefreshToken {
     private String refreshToken;
 
     @Indexed
-    private String email;
+    private Long kakaoId;
 
     @Builder
-    public RefreshToken(String refreshToken, String email) {
+    public RefreshToken(String refreshToken, Long kakaoId) {
         this.refreshToken = refreshToken;
-        this.email = email;
+        this.kakaoId = kakaoId;
     }
 
     public RefreshToken updateRefreshToken(String refreshToken) {

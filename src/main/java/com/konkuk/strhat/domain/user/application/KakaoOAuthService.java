@@ -23,28 +23,27 @@ public class KakaoOAuthService {
     private final JwtProvider jwtProvider;
 
     @Transactional(readOnly = true)
-    public PostKakaoSignInResponse getUserProfileByToken(PostKakaoSignInRequest request, HttpServletResponse httpServletResponse) {
-        Map<String, Object> userAttributes = getUserAttributesByToken(request.getKakaoAccessToken());
-        Map<String, Object> account = (Map<String, Object>) userAttributes.get("kakao_account");
-        String email = (String) account.get("email");
+    public PostKakaoSignInResponse getUserIdByToken(PostKakaoSignInRequest request, HttpServletResponse response) {
+        Long kakaoId = getKakaoIdByToken(request.getKakaoAccessToken());
 
-        Optional<User> user = userRepository.findByEmail(email);
-
+        Optional<User> user = userRepository.findByKakaoId(kakaoId);
         if(user.isPresent()){
-            TokenDto tokenDto = jwtProvider.createAllToken(user.get().getEmail());
-            jwtProvider.setResponseHeaderToken(httpServletResponse, tokenDto);
-            return PostKakaoSignInResponse.of(true, email);
+            TokenDto tokenDto = jwtProvider.createAllToken(user.get().getKakaoId());
+            jwtProvider.setResponseHeaderToken(response, tokenDto);
+            return PostKakaoSignInResponse.of(true, kakaoId);
         }
-        return PostKakaoSignInResponse.of(false, email);
+        return PostKakaoSignInResponse.of(false, kakaoId);
     }
 
-    private Map<String, Object> getUserAttributesByToken(String kakaoToken){
-        return WebClient.create()
+    private Long getKakaoIdByToken(String kakaoAccessToken) {
+        Map<String, Object> result = WebClient.create()
                 .get()
-                .uri("https://kapi.kakao.com/v2/user/me")
-                .headers(httpHeaders -> httpHeaders.setBearerAuth(kakaoToken))
+                .uri("https://kapi.kakao.com/v1/user/access_token_info")
+                .headers(headers -> headers.setBearerAuth(kakaoAccessToken))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                 .block();
+
+        return ((Number) result.get("id")).longValue();
     }
 }

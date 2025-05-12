@@ -3,9 +3,9 @@ package com.konkuk.strhat.domain.user.exception;
 import com.konkuk.strhat.global.error.CustomException;
 import com.konkuk.strhat.global.error.ErrorCode;
 
-public class DuplicateEmailException extends CustomException {
+public class DuplicateKakaoIdException extends CustomException {
 
-    public DuplicateEmailException() {
-        super(ErrorCode.DUPLICATE_EMAIL);
+    public DuplicateKakaoIdException() {
+        super(ErrorCode.DUPLICATE_KAKAO_ID);
     }
 }
