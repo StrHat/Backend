@@ -22,7 +22,7 @@ public class SecurityUtil {
         return customUserDetails.getId();
     }
 
-    public static String getCurrentUserEmail() {
+    public static Long getCurrentUserKakaoId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new NotFoundUserException();
@@ -32,7 +32,7 @@ public class SecurityUtil {
             throw new NotFoundUserException();
         }
 
-        return customUserDetails.getEmail();
+        return customUserDetails.getKakaoId();
     }
 }
 

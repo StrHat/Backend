@@ -3,7 +3,6 @@ package com.konkuk.strhat.domain.user.dto;
 import com.konkuk.strhat.domain.user.entity.User;
 import com.konkuk.strhat.domain.user.enums.Gender;
 import com.konkuk.strhat.domain.user.enums.Job;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,9 +16,8 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostSignUpRequest {
 
-    @NotBlank
-    @Email
-    private String email;
+    @NotNull
+    private Long kakaoId;
 
     @NotBlank
     @Length(max = 5)
@@ -50,7 +48,7 @@ public class PostSignUpRequest {
 
     public User toUserEntity() {
         return User.builder()
-                .email(this.email)
+                .kakaoId(this.kakaoId)
                 .nickname(this.nickname)
                 .birth(this.birth)
                 .gender(Gender.toGender(this.gender))

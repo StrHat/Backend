@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/users/sign-up", "/api/v1/users/reissue-token").permitAll()
-                        .requestMatchers("/api/v1/auth/kakao").permitAll()
+                        .requestMatchers("/api/v1/auth/kakao", "https://kapi.kakao.com/v1/user/access_token_info").permitAll()
                         .requestMatchers("/swagger-ui/**", "swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
@@ -53,6 +53,7 @@ public class SecurityConfig {
         return web -> web.ignoring().requestMatchers(
                 "/api/v1/users/sign-up",
                 "/api/v1/auth/kakao",
+                "https://kapi.kakao.com/v1/user/access_token_info",
                 "/api/v1/users/reissue-token",
                 "/swagger-ui/**",
                 "/swagger-ui.html",

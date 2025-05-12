@@ -16,7 +16,7 @@ public enum ErrorCode {
     // USER
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "U404", "유저가 존재하지 않습니다"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "U405", "허용되지 않는 메서드입니다"),
-    DUPLICATE_EMAIL(HttpStatus.CONFLICT, "U409", "이미 존재하는 이메일입니다."),
+    DUPLICATE_KAKAO_ID(HttpStatus.CONFLICT, "U409", "이미 존재하는 카카오 계정입니다."),
     UNSUPPORTED_GENDER_TYPE(HttpStatus.BAD_REQUEST, "U400", "지원하지 않는 성별 타입입니다."),
     UNSUPPORTED_JOB_TYPE(HttpStatus.BAD_REQUEST, "U400", "지원하지 않는 직업 타입입니다."),
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "U400", "올바르지 않은 값 또는 형식입니다."),

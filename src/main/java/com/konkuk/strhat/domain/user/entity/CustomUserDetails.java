@@ -13,7 +13,7 @@ import java.util.Collections;
 public class CustomUserDetails implements UserDetails {
 
     private final Long id;
-    private final String email;
+    private final Long kakaoId;
     private final String nickname;
 
     @Override
