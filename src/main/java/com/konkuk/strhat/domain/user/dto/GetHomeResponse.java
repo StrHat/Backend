@@ -29,7 +29,7 @@ public class GetHomeResponse {
 
     public static GetHomeResponse of(User user, Diary diary) {
         return GetHomeResponse.builder()
-                .hasDiary(false)
+                .hasDiary(true)
                 .nickname(user.getNickname())
                 .emotion(diary.getEmotion())
                 .build();
@@ -37,7 +37,7 @@ public class GetHomeResponse {
 
     public static GetHomeResponse of(User user, Diary diary, Feedback feedback) {
         return GetHomeResponse.builder()
-                .hasDiary(false)
+                .hasDiary(true)
                 .nickname(user.getNickname())
                 .emotion(diary.getEmotion())
                 .positiveEmotions(feedback.getPositiveEmotionArray())
@@ -47,7 +47,7 @@ public class GetHomeResponse {
 
     public static GetHomeResponse of(User user, Diary diary, StressScore stressScore) {
         return GetHomeResponse.builder()
-                .hasDiary(false)
+                .hasDiary(true)
                 .nickname(user.getNickname())
                 .emotion(diary.getEmotion())
                 .stressScore(stressScore.getScore())
