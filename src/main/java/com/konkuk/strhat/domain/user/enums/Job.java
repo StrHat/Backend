@@ -1,6 +1,5 @@
 package com.konkuk.strhat.domain.user.enums;
 
-import com.konkuk.strhat.domain.user.exception.UnsupportedGenderTypeException;
 import com.konkuk.strhat.domain.user.exception.UnsupportedJobTypeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
