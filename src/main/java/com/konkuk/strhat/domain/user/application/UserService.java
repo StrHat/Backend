@@ -66,7 +66,7 @@ public class UserService {
     @Transactional
     public void processSignOut(Long kakaoId) {
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKakaoId(kakaoId);
-        refreshToken.ifPresent(refreshTokenRepository::deleteAll);
+        refreshToken.ifPresent(refreshTokenRepository::delete);
     }
 
     @Transactional
