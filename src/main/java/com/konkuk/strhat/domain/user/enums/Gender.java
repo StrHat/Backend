@@ -4,6 +4,8 @@ import com.konkuk.strhat.domain.user.exception.UnsupportedGenderTypeException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 @Getter
 @RequiredArgsConstructor
 public enum Gender {
@@ -12,11 +14,10 @@ public enum Gender {
 
     private final String description;
 
-    public static Gender toGender(String string) {
-        try {
-            return Gender.valueOf(string.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new UnsupportedGenderTypeException();
-        }
+    public static Gender from(String value) {
+        return Arrays.stream(values())
+                .filter(g -> g.getDescription().equals(value.trim()))
+                .findFirst()
+                .orElseThrow(UnsupportedGenderTypeException::new);
     }
 }
