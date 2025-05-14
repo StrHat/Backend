@@ -40,8 +40,9 @@ public class SelfDiagnosisController {
 
     @GetMapping("/result")
     public ApiResponse<GetSelfDiagnosisResultResponse> readSelfDiagnosisResult(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        GetSelfDiagnosisResultResponse response = selfDiagnosisService.findSelfDiagnosisResult(date, SecurityUtil.getCurrentUserId());
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+            @RequestParam String type) {
+        GetSelfDiagnosisResultResponse response = selfDiagnosisService.findSelfDiagnosisResult(date, SecurityUtil.getCurrentUserId(), type);
         return ApiResponse.success(response);
     }
 }

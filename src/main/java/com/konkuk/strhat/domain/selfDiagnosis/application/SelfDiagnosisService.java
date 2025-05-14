@@ -37,9 +37,9 @@ public class SelfDiagnosisService {
 
     public List<GetSelfDiagnosisQuestion> findSelfDiagnosis(String type) {
         return switch (type) {
-            case "pss"   -> pssQuestionList();
-            case "sri"   -> sriQuestionList();
-            case "phq-9" -> phq9QuestionList();
+            case "pss", "PSS"   -> pssQuestionList();
+            case "sri", "SRI"   -> sriQuestionList();
+            case "phq9", "PHQ9" -> phq9QuestionList();
             default      -> throw new UnsupportedSelfDiagnosisTypeException();
         };
     }
@@ -49,7 +49,10 @@ public class SelfDiagnosisService {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
 
-        Optional<SelfDiagnosis> optionalSelfDiagnosis = selfDiagnosisRepository.findBySelfDiagnosisDateAndUser(LocalDate.now(), user);
+        Optional<SelfDiagnosis> optionalSelfDiagnosis =
+                selfDiagnosisRepository.findBySelfDiagnosisDateAndUserAndType(LocalDate.now(), user,
+                        SelfDiagnosisType.toSelfDiagnosisType(request.getType()));
+
         if (optionalSelfDiagnosis.isPresent()) {
             throw new DuplicateSelfDiagnosisException();
         }
@@ -64,11 +67,12 @@ public class SelfDiagnosisService {
     }
 
     @Transactional(readOnly = true)
-    public GetSelfDiagnosisResultResponse findSelfDiagnosisResult(LocalDate date, Long userId) {
+    public GetSelfDiagnosisResultResponse findSelfDiagnosisResult(LocalDate date, Long userId, String type) {
         User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundUserException::new);
 
-        SelfDiagnosis selfDiagnosis = selfDiagnosisRepository.findBySelfDiagnosisDateAndUser(date, user)
+        SelfDiagnosis selfDiagnosis = selfDiagnosisRepository
+                .findBySelfDiagnosisDateAndUserAndType(date, user, SelfDiagnosisType.toSelfDiagnosisType(type))
                 .orElseThrow(NotFoundSelfDiagnosisException::new);
 
         String selfDiagnosisLevel = switch (selfDiagnosis.getType()) {
