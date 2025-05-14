@@ -37,9 +37,9 @@ public class SelfDiagnosisService {
 
     public List<GetSelfDiagnosisQuestion> findSelfDiagnosis(String type) {
         return switch (type) {
-            case "pss"   -> pssQuestionList();
-            case "sri"   -> sriQuestionList();
-            case "phq-9" -> phq9QuestionList();
+            case "pss", "PSS"   -> pssQuestionList();
+            case "sri", "SRI"   -> sriQuestionList();
+            case "phq9", "PHQ9" -> phq9QuestionList();
             default      -> throw new UnsupportedSelfDiagnosisTypeException();
         };
     }
