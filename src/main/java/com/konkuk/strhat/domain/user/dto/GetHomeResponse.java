@@ -5,11 +5,12 @@ import com.konkuk.strhat.domain.diary.entity.Feedback;
 import com.konkuk.strhat.domain.stressScore.entity.StressScore;
 import com.konkuk.strhat.domain.stressScore.exception.ScoreOutOfRangeException;
 import com.konkuk.strhat.domain.user.entity.User;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 public class GetHomeResponse {
 
     private boolean hasDiary;

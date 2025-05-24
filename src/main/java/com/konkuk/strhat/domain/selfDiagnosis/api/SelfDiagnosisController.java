@@ -5,6 +5,7 @@ import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisResultResponse
 import com.konkuk.strhat.domain.selfDiagnosis.dto.PostSelfDiagnosisRequest;
 import com.konkuk.strhat.domain.selfDiagnosis.dto.GetSelfDiagnosisQuestion;
 import com.konkuk.strhat.global.response.ApiResponse;
+import com.konkuk.strhat.global.response.ApiResponseTempOnly;
 import com.konkuk.strhat.global.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class SelfDiagnosisController {
     }
 
     @PostMapping("")
-    public ApiResponse<Void> createSelfDiagnosisResult(@Valid @RequestBody PostSelfDiagnosisRequest request) {
+    public ApiResponseTempOnly createSelfDiagnosisResult(@Valid @RequestBody PostSelfDiagnosisRequest request) {
         selfDiagnosisService.generateSelfDiagnosisResult(request, SecurityUtil.getCurrentUserId());
-        return ApiResponse.successOnly();
+        return ApiResponseTempOnly.successTempOnly();
     }
 
     @GetMapping("/result")
