@@ -39,7 +39,7 @@ public class HomeService {
 
         Optional<Feedback> feedback = feedbackRepository.findByDiary(diary.get());
         Optional<StressScore> stressScore = stressScoreRepository
-                .findByDiaryAndUserAndStressScoreDate(diary.get(), user, LocalDate.now());
+                .findByDiaryAndUser(diary.get(), user);
 
         if (feedback.isEmpty() && stressScore.isEmpty()) {
             return GetHomeResponse.of(user, diary.get());

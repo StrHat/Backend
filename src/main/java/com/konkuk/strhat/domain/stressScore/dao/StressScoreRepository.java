@@ -7,22 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 public interface StressScoreRepository extends JpaRepository<StressScore, Long> {
-
     @Query("""
-                SELECT ss
-                  FROM StressScore ss, Diary d
-                 WHERE d.stressScore = ss
-                   AND d = :diary
-                   AND d.user = :user
-                   AND ss.stressScoreDate = :date
-            """)
-    Optional<StressScore> findByDiaryAndUserAndStressScoreDate(
+        SELECT ss 
+        FROM StressScore ss, Diary d
+        WHERE d.stressScore = ss
+        AND d = :diary
+        AND d.user = :user
+    """)
+    Optional<StressScore> findByDiaryAndUser(
             @Param("diary") Diary diary,
-            @Param("user") User user,
-            @Param("date") LocalDate date
+            @Param("user") User user
     );
 }
