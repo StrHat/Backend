@@ -9,6 +9,9 @@ import lombok.Getter;
 @Builder
 public class DailyStressScoreRequestDto {
 
+    @NotBlank(message = "nickname은 필수입니다.")
+    private final String nickname;
+
     @NotBlank(message = "userTraits는 필수입니다.")
     private final String userTraits;
 
@@ -19,6 +22,7 @@ public class DailyStressScoreRequestDto {
 
     public static DailyStressScoreRequestDto of(UserInfoDto userInfoDto, String diaryContent) {
         return DailyStressScoreRequestDto.builder()
+                .nickname(userInfoDto.getNickname())
                 .userTraits(buildUserTraits(userInfoDto))
                 .diaryContent(diaryContent)
                 .chatLog("임시")

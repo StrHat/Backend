@@ -12,6 +12,9 @@ import java.util.List;
 @Builder(access = AccessLevel.PRIVATE)
 public class WeeklyStressSummaryRequestDto {
 
+    @NotBlank(message = "nickname은 필수입니다.")
+    private final String nickname;
+
     @NotBlank(message = "userTraits는 필수입니다.")
     private final String userTraits;
 
@@ -22,6 +25,7 @@ public class WeeklyStressSummaryRequestDto {
 
     public static WeeklyStressSummaryRequestDto of(UserInfoDto userInfoDto, List<String> diaryContents) {
         return WeeklyStressSummaryRequestDto.builder()
+                .nickname(userInfoDto.getNickname())
                 .userTraits(buildUserTraits(userInfoDto))
                 .diaryContents(diaryContents)
                 .chatLog("임시")
