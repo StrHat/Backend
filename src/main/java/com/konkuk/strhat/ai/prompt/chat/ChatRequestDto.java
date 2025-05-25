@@ -3,10 +3,12 @@ package com.konkuk.strhat.ai.prompt.chat;
 import com.konkuk.strhat.domain.chat.entity.ChatMessage;
 import com.konkuk.strhat.domain.user.dto.UserInfoDto;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class ChatRequestDto {
     @NotBlank(message = "userChatMessage는 필수입니다.")
     private final String userChatMessage;
 
+    @NotNull(message = "today는 필수입니다.")
+    private final LocalDate today;
+
     public static ChatRequestDto of(UserInfoDto userInfoDto, String diaryContent, List<ChatMessage> chatMessageList, String userChatMessage) {
         List<String> chatLog = new ArrayList<>();
         String chatMode = "";
@@ -42,6 +47,7 @@ public class ChatRequestDto {
                 .chatLog(chatLog)
                 .chatMode(chatMode)
                 .userChatMessage(userChatMessage)
+                .today(LocalDate.now())
                 .build();
     }
 
