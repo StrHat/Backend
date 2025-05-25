@@ -28,7 +28,7 @@ public class AIChatService {
     private final GptResponseParser gptResponseParser;
     private final ChatMessageRepository chatMessageRepository;
 
-    public ChatMessage chat(ChatMessage chatMessage){
+    public ChatMessage chat(ChatMessage chatMessage) {
         Diary diary = chatMessage.getDiary();
         List<ChatMessage> previousMessages = chatMessageRepository.findAllByDiary(diary);
         ChatMode mode = chatMessage.getChatMode();
